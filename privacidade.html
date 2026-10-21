@@ -108,17 +108,16 @@
     instalação (não é o identificador de publicidade e não tem ligação com conta nenhuma)
     e o envia junto. O servidor guarda só uma contagem de pedidos por dia, ligada a uma
     versão embaralhada (hash) desse número, e a contagem expira. O seu endereço IP é usado
-    só na hora, contra abuso, e não é guardado. O Google Cloud mantém, por pouco tempo, um
-    registro técnico de cada pedido (hora, resultado e tempo de resposta), sem o conteúdo.
-    <!-- PENDENTE (Engenharia, conferir antes de publicar): por padrão, o log de
-         requisições do Cloud Run grava httpRequest.remoteIp e userAgent, e o bucket
-         _Default guarda 30 dias. "O IP não é guardado" só vale depois que o filtro de
-         exclusão (ou o sink) do Cloud Logging estiver no ar e for conferido num log real.
-         Atenção: filtro de exclusão descarta a entrada inteira, não um campo; se o
-         registro técnico (hora, resultado, latência) também sumir, tirar a última frase.
-         Se não der para tirar o IP, trocar a frase por: "O seu endereço IP fica nesse
-         registro técnico por até N dias, e depois é apagado." Publicar só com o servidor
-         no ar e a chave antiga do Gemini revogada. -->
+    só na hora, contra abuso, e não é guardado. O servidor só registra erros, sem nenhum
+    dado pessoal.
+    <!-- PENDENTE (conferir antes de publicar): por padrão, o log de requisições do
+         Cloud Run grava httpRequest.remoteIp e userAgent (bucket _Default, 30 dias). O
+         deploy cria um filtro de exclusão no sink _Default que descarta todos os logs de
+         requisição deste serviço; os logs da aplicação registram só erros, sem IP, user
+         agent, id de instalação nem corpo; o limite por IP fica só na memória do
+         servidor. Antes de publicar, conferir no Logs Explorer, depois de pedidos reais,
+         que não aparece nenhum log de requisição nem nenhum IP. Publicar só com o
+         servidor no ar e a chave antiga do Gemini revogada. -->
   </li>
   <li>
     <strong>O que o Google faz com a conversa e a carta.</strong> O Duncan usa o Gemini na
