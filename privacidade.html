@@ -46,13 +46,13 @@
 <h1>Política de Privacidade</h1>
 <p class="meta">Duncan · Tarefas e Hábitos · última atualização em 21 de outubro de 2026</p>
 <!-- PENDENTE (publicação): ao publicar, trocar a data acima pela data em que a página
-     entrar no ar, nas duas cópias (habit-quest/docs e ordem-do-dia). -->
+     entrar no ar, nas duas cópias (habit-quest/docs e duncan). -->
 
 <div class="destaque">
-  <strong>Em uma frase:</strong> o Duncan não tem conta própria nem servidor próprio, e
-  guarda tudo no seu aparelho. O conteúdo só sai dele quando você conversa com o Duncan,
+  <strong>Em resumo:</strong> o Duncan não tem conta nem servidor próprio, e guarda tudo
+  no seu aparelho. O que você escreve só sai dele quando você conversa com o Duncan,
   quando permite que ele escreva a carta da semana com a IA, quando liga o backup no seu
-  Google Drive ou quando denuncia uma resposta da IA.
+  Google Drive ou quando denuncia algo que a IA escreveu.
 </div>
 
 <h2>Quem é o responsável</h2>
@@ -83,19 +83,19 @@
     <strong>Conversa com o Duncan.</strong> Antes da primeira conversa com a IA, o app
     avisa o que vai para o Google e só segue depois do seu "Entendi". Quando você escreve
     ou fala com o Duncan, a mensagem vai para o Gemini, a IA do Google, junto com o que
-    vocês já conversaram e um retrato do app para ele responder com base nos seus dados:
+    vocês já conversaram e um resumo do que está no app, para ele responder com base nisso:
     seu nome, as tarefas pendentes, os hábitos, as metas (com o porquê de cada uma), o que
     você concluiu na semana e o que você contou no mapa, como a sua linha de chegada. Se
     você usar o microfone, o áudio também vai, para virar texto.
   </li>
   <li>
-    <strong>Carta da semana, se você permitir.</strong> Toda semana, na primeira vez que
-    você abre o app a partir de segunda, o Duncan escreve uma carta sobre a semana que
-    passou. Se você escolher escrevê-la com a IA, ele envia ao Gemini o seu nome, o que
-    você fez na semana, os blocos de foco, o humor e a energia registrados e até 500
-    caracteres do que você escreveu sobre cada dia. Se escolher escrever sem a IA, ou sem
-    internet, a carta sai num formato simples, só com os números do aparelho, e nada é
-    enviado. Dá para mudar a escolha quando quiser, em Configurações.
+    <strong>Carta da semana, se você permitir.</strong> Toda segunda chega uma carta sobre
+    a semana que passou (na primeira vez que você abre o app a partir de segunda). Antes da
+    primeira, o Duncan pergunta se você quer que ele a escreva com a IA. Se sim, ele envia
+    ao Gemini o seu nome, as tarefas, hábitos, metas e foco da semana, o humor, a energia e
+    trechos do que você escreveu sobre cada dia (até 500 caracteres por dia). Sem a IA, a
+    carta chega do mesmo jeito, com os números da semana e um conselho pronto, e nada é
+    enviado. Dá para mudar quando quiser, em Configurações.
   </li>
   <li>
     <strong>O que o Google faz com a conversa e a carta.</strong> O Google processa esse
@@ -122,15 +122,19 @@
     da conta conectada, só para mostrar qual está ligada.
   </li>
   <li>
-    <strong>Denúncia de uma resposta da IA, se você fizer.</strong> Se uma resposta do
-    Duncan for ofensiva, perigosa ou falsa, você pode denunciá-la de dentro do app. Vão o
-    texto daquela resposta, o motivo e o seu comentário, além da versão do app. Se a
-    resposta citar o seu nome ou as suas tarefas, isso vai junto; o resto da conversa fica
-    no aparelho. A denúncia chega a nós por um Formulário Google, e usamos para corrigir o
-    Duncan. Se o envio falhar, o app pode abrir o seu aplicativo de e-mail já preenchido;
-    nesse caso, quem recebe vê o seu endereço de e-mail. Guardamos as denúncias por até
-    [PRAZO] e as apagamos antes, se você pedir.
-    <!-- PENDENTE (dono): prazo de guarda das denúncias. Sugestão da Publicação: 12 meses. -->
+    <strong>Denúncia de uma resposta ou de uma carta, se você fizer.</strong> Se uma
+    resposta do Duncan ou a carta da semana escrita com a IA for ofensiva, perigosa ou
+    falsa, você pode denunciá-la de dentro do app, sem sair dele. Vão o texto denunciado, o
+    motivo e o seu comentário, além da versão do app. Se o texto citar o seu nome ou as suas
+    tarefas, isso vai junto; o resto da conversa fica no aparelho. O app não envia o seu
+    nome nem o seu e-mail na denúncia. Ela chega a nós por um Formulário Google (um serviço do Google),
+    e usamos as denúncias para corrigir o Duncan. Sem internet, a denúncia fica guardada
+    neste aparelho e sai sozinha quando a rede voltar; "Apagar todos os dados" também apaga
+    as que ainda não saíram. Guardamos as denúncias por até [PRAZO] e as apagamos antes, se
+    você pedir.
+    <!-- PENDENTE (dono): prazo de guarda das denúncias. Sugestão da Publicação: 12 meses.
+         Descreve o PR #249 na head 9407008 (formulário por fetch, fila no aparelho com
+         reenvio, sem e-mail de reserva). Se o #249 mudar, este parágrafo muda junto. -->
   </li>
   <li>
     <strong>Verificação de atualização.</strong> Ao abrir, o aplicativo consulta o
@@ -153,23 +157,22 @@
        internacional (LGPD, arts. 7º, 11 e 33). -->
 </p>
 
-<h2>Agenda do celular, se você ligar</h2>
-<!-- PENDENTE (PR #145): esta seção só vale quando a agenda entrar no app. Até lá, tirar
-     esta seção da cópia publicada, ou publicá-la só junto com o APK que tiver o #145. -->
-<p>
-  Em Configurações, você pode pedir que o Duncan grave as suas tarefas com data numa
-  agenda do celular, que o Android sincroniza com o Google Agenda. O app pede a permissão
-  de agenda só nessa hora. Ele lê os eventos da agenda escolhida para reconhecer os que ele
-  mesmo criou, e grava o título e a data das tarefas. Tudo acontece no aparelho: o Duncan
-  não envia a sua agenda a lugar nenhum. A sincronização com a nuvem é feita pelo
-  aplicativo de agenda, sob a política dele. Dá para desligar quando quiser.
-</p>
+<!-- PENDENTE (PR #145): a seção "Agenda do celular" fica fora até o #145 estar no APK.
+     Texto pronto para quando entrar:
+     <h2>Agenda do celular, se você ligar</h2>
+     <p>Em Configurações, você pode pedir que o Duncan grave as suas tarefas com data numa
+     agenda do celular, que o Android sincroniza com o Google Agenda. O app pede a
+     permissão de agenda só nessa hora. Ele lê os eventos da agenda escolhida para
+     reconhecer os que ele mesmo criou, e grava o título e a data das tarefas. Tudo
+     acontece no aparelho: o Duncan não envia a sua agenda a lugar nenhum. A sincronização
+     com a nuvem é feita pelo aplicativo de agenda, sob a política dele. Dá para desligar
+     quando quiser.</p> -->
 
 <h2>Notificações</h2>
 <p>
   Os lembretes são <strong>locais</strong>: agendados e disparados pelo próprio
-  aparelho. O aplicativo não usa notificações push remotas e não registra nenhum
-  token de notificação em servidor algum. Durante o foco, se você permitir, o app liga o
+  aparelho. Nenhum lembrete chega pela internet, e o app não se cadastra em nenhum
+  serviço de notificações. Durante o foco, se você permitir, o app liga o
   Não perturbe e o desliga no fim.
 </p>
 
@@ -177,8 +180,8 @@
 <p>
   Humor, energia, o "Tive vontade" e as conversas com o Duncan são registros pessoais e
   apoio para a rotina. Não são diagnóstico nem tratamento, e não substituem acompanhamento
-  profissional. Se você estiver em sofrimento, procure ajuda: o CVV atende pelo 188, a
-  qualquer hora.
+  profissional. Se estiver passando por um momento difícil, o CVV atende pelo 188, a
+  qualquer hora. Numa emergência, ligue 192.
 </p>
 
 <h2>O que o aplicativo não faz</h2>
@@ -190,14 +193,20 @@
 </ul>
 
 <h2>Permissões</h2>
+<ul>
+  <li><strong>Internet:</strong> para a conversa, a carta da semana, o backup no Drive, a
+    denúncia e a verificação de atualização.</li>
+  <li><strong>Notificações:</strong> para os lembretes.</li>
+  <li><strong>Microfone:</strong> só quando você toca nele para falar com o Duncan.</li>
+  <li><strong>Alarmes exatos:</strong> para avisar o fim do bloco de foco na hora certa,
+    se o celular permitir.</li>
+  <li><strong>Reinício do celular:</strong> para religar os lembretes e o bloco de foco
+    depois que o celular reinicia.</li>
+  <li><strong>Não perturbe:</strong> só se você conceder, para silenciar o celular durante
+    o foco.</li>
+</ul>
 <p>
-  O aplicativo declara acesso à <strong>internet</strong> (para a conversa com o Duncan, a
-  carta da semana, o backup no Drive, a denúncia e a verificação de atualização), pede para
-  <strong>exibir notificações</strong> (lembretes), usa o <strong>microfone</strong> só
-  quando você toca nele, pode agendar <strong>alarmes</strong> para avisar o fim do bloco de
-  foco na hora certa, religa o bloco de foco quando o celular reinicia e, se você
-  conceder, controla o <strong>Não perturbe</strong> durante o foco. Recusar qualquer uma
-  delas não impede o uso do resto do aplicativo.
+  Recusar qualquer uma delas não impede o uso do resto do aplicativo.
 </p>
 
 <h2>Como apagar seus dados</h2>
@@ -205,13 +214,21 @@
   <li>
     Em <strong>Configurações</strong>, "Apagar todos os dados" apaga deste aparelho tarefas,
     hábitos, metas, XP, conquistas, avaliações da Roda da Vida, cartas do Diário, humor,
-    foco e a conversa com o Duncan, e para o backup automático no Drive. A ação não pode
-    ser desfeita.
+    foco e a conversa com o Duncan, e as denúncias que ainda não saíram. Também pausa o
+    backup automático no Drive, até você tocar em "salvar agora" de novo. A cópia que já
+    está no Drive continua lá; para apagá-la, veja o item abaixo. A ação não pode ser
+    desfeita.
   </li>
   <li>
-    Em <strong>Configurações</strong>, "Apagar o backup do Drive" apaga de vez a cópia que
-    está na pasta do app no seu Google Drive. Também dá para apagar pelo próprio Drive, no
+    Em <strong>Configurações</strong>, na parte do Google Drive, o botão "apagar backup"
+    (ou "Apagar backup do Drive", se o Drive não estiver conectado) apaga de vez a cópia que
+    está na pasta do app no seu Google Drive, sem passar pela lixeira, e desconecta o Drive
+    para o app não salvar outra sozinho. Também dá para apagar pelo próprio Drive, no
     navegador: Configurações › Gerenciar apps › Duncan › "Excluir dados ocultos do app".
+  </li>
+  <li>
+    Desconectar o Google Drive não apaga a cópia que já está lá: ela fica até você
+    apagá-la, e o app para de salvar novas.
   </li>
   <li>
     Desinstalar o aplicativo remove o banco de dados local junto.
@@ -245,13 +262,13 @@
 <h2>Mudanças nesta política</h2>
 <p>
   Se o aplicativo passar a tratar dados de outra forma, esta página será atualizada
-  antes da mudança entrar no ar, e a data no topo mudará junto.
+  antes de a mudança entrar no ar, e a data no topo mudará junto.
 </p>
 
 <h2>Contato</h2>
 <p>
   Dúvidas sobre esta política ou pedidos sobre os seus dados:
-  <a href="mailto:kikomeza.78@gmail.com">kikomeza.78@gmail.com</a>.
+  <a href="mailto:conta.duncan@gmail.com">conta.duncan@gmail.com</a>.
 </p>
 
 <footer>
