@@ -49,8 +49,8 @@
      entrar no ar, nas duas cópias (habit-quest/docs e duncan). -->
 
 <div class="destaque">
-  <strong>Em resumo:</strong> o Duncan não tem conta nem servidor próprio, e guarda tudo
-  no seu aparelho. O que você escreve só sai dele quando você conversa com o Duncan,
+  <strong>Em resumo:</strong> o Duncan não tem conta, não guarda os seus dados em servidor
+  nenhum e mantém tudo no seu aparelho. O que você escreve só sai dele quando você conversa com o Duncan,
   quando permite que ele escreva a carta da semana com a IA, quando liga o backup no seu
   Google Drive ou quando denuncia algo que a IA escreveu.
 </div>
@@ -73,8 +73,9 @@
   aparelho.
 </p>
 <p>
-  Não existe cadastro nem conta do Duncan. Não temos servidor que receba os seus dados. A
-  conexão com o Google existe só para o backup opcional no Drive, descrito abaixo.
+  Não existe cadastro nem conta do Duncan. O Duncan tem um servidor só para levar as
+  mensagens até a IA, e ele não guarda o que você escreve (veja abaixo). A sua conta
+  Google só entra se você ligar o backup no Drive.
 </p>
 
 <h2>O que sai do aparelho</h2>
@@ -82,7 +83,8 @@
   <li>
     <strong>Conversa com o Duncan.</strong> Antes da primeira conversa com a IA, o app
     avisa o que vai para o Google e só segue depois do seu "Entendi". Quando você escreve
-    ou fala com o Duncan, a mensagem vai para o Gemini, a IA do Google, junto com o que
+    ou fala com o Duncan, a mensagem vai para o Gemini, a IA do Google, passando pelo
+    servidor do Duncan, junto com o que
     vocês já conversaram e um resumo do que está no app, para ele responder com base nisso:
     seu nome, as tarefas pendentes, os hábitos, as metas (com o porquê de cada uma), o que
     você concluiu na semana e o que você contou no mapa, como a sua linha de chegada. Se
@@ -98,19 +100,43 @@
     enviado. Dá para mudar quando quiser, em Configurações.
   </li>
   <li>
-    <strong>O que o Google faz com a conversa e a carta.</strong> O Google processa esse
-    conteúdo para gerar a resposta, sob os
-    <a href="https://ai.google.dev/gemini-api/terms">Termos Adicionais do Gemini API</a> e a
-    <a href="https://policies.google.com/privacy">Política de Privacidade do Google</a>. Ele
-    pode guardar o conteúdo por um tempo e, conforme a modalidade do Gemini usada pelo
-    app, usá-lo para melhorar os produtos dele, inclusive com leitura por revisores
-    humanos depois de desvinculado da conta. Não escreva ao Duncan o que você não quer
-    que chegue ao Google.
-    <!-- PENDENTE (decisão A, até 24/10): se o app for para a loja na faixa paga do Gemini,
-         trocar as duas penúltimas frases por: "O Google não usa esse conteúdo para
-         melhorar os produtos dele e o guarda por tempo limitado, só para detectar abuso e
-         cumprir obrigações legais." Se entrar um servidor intermediário do Duncan, dizer
-         também que a conversa passa por ele, o que ele guarda e por quanto tempo. -->
+    <strong>O servidor do Duncan.</strong> A conversa, o áudio do microfone e a carta da
+    semana não vão direto do celular para o Gemini: passam antes por um servidor do Duncan
+    no Google Cloud, em São Paulo, que os repassa ao Gemini e devolve a resposta. Esse
+    servidor não guarda a conversa, a carta nem nada do que você escreveu, e não grava o
+    conteúdo dos pedidos. Para evitar abuso, o app cria um número aleatório desta
+    instalação (não é o identificador de publicidade e não tem ligação com conta nenhuma)
+    e o envia junto. O servidor guarda só uma contagem de pedidos por dia, ligada a uma
+    versão embaralhada (hash) desse número, e a contagem expira. O seu endereço IP é usado
+    só na hora, contra abuso, e não é guardado. O Google Cloud mantém, por pouco tempo, um
+    registro técnico de cada pedido (hora, resultado e tempo de resposta), sem o conteúdo.
+    <!-- PENDENTE (Engenharia, conferir antes de publicar): por padrão, o log de
+         requisições do Cloud Run grava httpRequest.remoteIp e userAgent, e o bucket
+         _Default guarda 30 dias. "O IP não é guardado" só vale depois que o filtro de
+         exclusão (ou o sink) do Cloud Logging estiver no ar e for conferido num log real.
+         Atenção: filtro de exclusão descarta a entrada inteira, não um campo; se o
+         registro técnico (hora, resultado, latência) também sumir, tirar a última frase.
+         Se não der para tirar o IP, trocar a frase por: "O seu endereço IP fica nesse
+         registro técnico por até N dias, e depois é apagado." Publicar só com o servidor
+         no ar e a chave antiga do Gemini revogada. -->
+  </li>
+  <li>
+    <strong>O que o Google faz com a conversa e a carta.</strong> O Duncan usa o Gemini na
+    modalidade paga, em que o Google atua como prestador de serviço: processa o conteúdo
+    só para gerar a resposta, sob os
+    <a href="https://ai.google.dev/gemini-api/terms">Termos Adicionais do Gemini API</a> e o
+    adendo de proteção de dados do Google como operador. Nessa modalidade, o Google não usa
+    o que você envia nem as respostas para melhorar os produtos dele. Ele guarda as
+    mensagens e as respostas por 55 dias, só para detectar e impedir abuso e cumprir
+    obrigações legais; nesse caso, funcionários autorizados do Google podem ler o que for
+    sinalizado pelos filtros de segurança. Não escreva ao Duncan o que você não quer que
+    chegue ao Google.
+    <!-- Decisão A (21/10/2026): Gemini pago + servidor intermediário no Cloud Run
+         (southamerica-east1), mesmo projeto da chave paga. Base: Gemini API Additional
+         Terms (vigentes desde 23/03/2026, "Paid Services") e
+         ai.google.dev/gemini-api/docs/usage-policies ("fifty-five (55) days"),
+         conferidos em 21/10/2026. Se a chave do app cair na cota gratuita, este
+         parágrafo deixa de valer. -->
   </li>
   <li>
     <strong>Backup no Google Drive, se você ligar.</strong> Em Configurações, você pode
@@ -151,8 +177,10 @@
   </li>
 </ul>
 <p>
-  Os servidores do Google e da Expo podem ficar fora do Brasil, então esses envios podem
-  ser uma transferência internacional de dados.
+  O servidor do Duncan fica no Brasil, mas os servidores do Gemini, do Google e da Expo
+  podem ficar fora do país (os termos do Gemini permitem guardar o conteúdo por pouco
+  tempo em qualquer país onde o Google tenha instalações), então esses envios podem ser
+  uma transferência internacional de dados.
   <!-- PENDENTE (advogado): base legal de cada tratamento e redação da transferência
        internacional (LGPD, arts. 7º, 11 e 33). -->
 </p>
@@ -189,6 +217,7 @@
   <li>Não exibe anúncios.</li>
   <li>Não usa ferramentas de analytics, telemetria ou rastreamento de uso.</li>
   <li>Não coleta localização, contatos, fotos, câmera nem identificadores de publicidade. O microfone só é usado quando você toca nele para falar com o Duncan.</li>
+  <li>Não guarda o que você escreve em servidor nosso.</li>
   <li>Não vende nem aluga seus dados. Eles só saem do aparelho nos casos descritos acima.</li>
 </ul>
 
