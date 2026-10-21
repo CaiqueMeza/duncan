@@ -100,22 +100,30 @@
     enviado. Dá para mudar quando quiser, em Configurações.
   </li>
   <li>
-    <strong>O servidor do Duncan.</strong> A conversa, o áudio do microfone e a carta da
-    semana não vão direto do celular para o Gemini: passam antes por um servidor do Duncan
-    no Google Cloud, em São Paulo, que os repassa ao Gemini e devolve a resposta. Esse
-    servidor não guarda a conversa, a carta nem nada do que você escreveu, e não grava o
-    conteúdo dos pedidos. Para evitar abuso, o app cria um número aleatório desta
-    instalação (não é o identificador de publicidade e não tem ligação com conta nenhuma)
-    e o envia junto. O servidor guarda só uma contagem de pedidos por dia, ligada a uma
-    versão embaralhada (hash) desse número, e a contagem expira. O seu endereço IP é usado
-    só na hora, contra abuso, e não é guardado. O servidor só registra erros, sem nenhum
-    dado pessoal.
+    <strong>O servidor do Duncan.</strong> A conversa, a carta da semana e o áudio do
+    microfone (que vai para virar texto) não vão direto do celular para o Gemini: passam
+    antes por um servidor do Duncan no Google Cloud, em São Paulo, que os repassa ao Gemini
+    e devolve a resposta. Esse servidor não guarda a conversa, a carta, o áudio nem nada do
+    que você escreveu, e não grava o conteúdo dos pedidos. Para evitar abuso, há um limite
+    de pedidos por dia em cada aparelho: o app cria um número aleatório desta instalação
+    (não é o identificador de publicidade e não tem ligação com conta nenhuma) e o envia
+    junto. O servidor guarda só uma contagem de pedidos do dia, ligada a uma versão
+    embaralhada (hash) desse número com a data, no Google Firestore, no mesmo projeto do
+    Google Cloud. Essa contagem é apagada automaticamente depois de dois dias. O seu
+    endereço IP é usado só na hora, contra abuso, e não é guardado. O registro do servidor
+    tem só dados técnicos de cada pedido (o tipo, o resultado e o tempo de resposta), sem
+    nenhum dado pessoal.
     <!-- PENDENTE (conferir antes de publicar): por padrão, o log de requisições do
          Cloud Run grava httpRequest.remoteIp e userAgent (bucket _Default, 30 dias). O
-         deploy cria um filtro de exclusão no sink _Default que descarta todos os logs de
-         requisição deste serviço; os logs da aplicação registram só erros, sem IP, user
-         agent, id de instalação nem corpo; o limite por IP fica só na memória do
-         servidor. Antes de publicar, conferir no Logs Explorer, depois de pedidos reais,
+         deploy (passo "preparar", antes do primeiro "publicar") cria um filtro de
+         exclusão no sink _Default que descarta todos os logs de requisição deste serviço.
+         Os logs da aplicação registram uma linha por pedido (uso, status, ms, modelo,
+         tentativas) e os erros, sem IP, user agent, id de instalação nem corpo
+         (PR #258: servidor-ia/src/log.ts:7, servidor.ts:74-83). O limite por IP fica só na
+         memória do servidor, com hash do IP (limites.ts:75-95). Contador: Firestore,
+         documento <dia>_<sha256("dia:id")>, TTL no campo "expira" = dois dias depois do
+         início do dia (limites.ts:29-31, :70-73); o TTL do Firestore apaga em até ~24 h
+         depois disso. Conferir de novo se o #258 mudar antes do merge. Antes de publicar, conferir no Logs Explorer, depois de pedidos reais,
          que não aparece nenhum log de requisição nem nenhum IP. Publicar só com o
          servidor no ar e a chave antiga do Gemini revogada. -->
   </li>
