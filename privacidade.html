@@ -306,26 +306,26 @@
     nome, o perfil do mapa, os avisos que você já leu, os consentimentos e a cópia
     temporária de um backup em arquivo, se ela tiver ficado no app. O arquivo que você já
     salvou ou enviou para outro lugar fica onde está. O app volta para a apresentação. Ficam só as suas
-    escolhas de lembrete.
+    escolhas de lembrete e um aviso, sem dado pessoal, que segura o backup automático no
+    Drive. Ele só volta quando você restaurar o backup ou tocar em "salvar agora", para o
+    app vazio não tomar o lugar do backup que está lá.
   </li>
   <li>
     O botão também desconecta a sua conta Google neste aparelho: o app esquece o e-mail
-    do Drive e sai da sessão.<!-- #311 --> O número desta instalação, usado só para
+    do Drive e a data do último backup, e sai da sessão do Google. Isso acontece só no
+    aparelho: o app não pede nada ao Drive nessa hora.<!-- #311 --> O número desta instalação, usado só para
     limitar o uso da IA, é apagado e outro é criado.<!-- /#311 -->
   </li>
   <li>
-    Os backups que já estão no Drive não saem com esse botão. Para apagá-los, use "apagar
-    backup" (veja o item abaixo). As denúncias que já foram enviadas saem se você pedir a
+    Os backups que já estão no Drive não saem com esse botão. Para apagá-los, use "Apagar
+    backup do Drive", em Configurações (veja o item abaixo). As denúncias que já foram enviadas saem se você pedir a
     conta.duncan@gmail.com. A ação não pode ser desfeita.
-    <!-- PENDENTE (PR do Engenheiro, conferir no código antes de publicar): o comportamento
-         acima é a decisão do Product Owner de 21/10/2026. Na main (2182676) e no #311
-         (1a2cf26), apagarTodosOsDados() (src/lib/apagarTudo.ts) ainda NÃO apaga o backup
-         em arquivo do cache (src/lib/backup.ts grava em cacheDirectory e não apaga) e NÃO
-         desconecta o Google: a conta fica em nuvemStore, não há GoogleSignin.signOut, e o
-         backup automático só é pausado. As escolhas de lembrete ficam
-         (MANTIDOS_NO_APAGAR_TUDO, src/store/settingsStore.ts). O id novo da instalação
-         está no #311 (apagarTudo.ts:40, clienteIA.ts:138-146). Publicar só depois de
-         conferir o PR do Engenheiro com o cache e o signOut mergeado. -->
+    <!-- Conferido na main c921469 (#314 em a90c429, #311 já mergeado): src/lib/apagarTudo.ts
+         29-67 (signOut em :64 via driveBackup.ts:59-62, sem revokeAccess; nuvemStore
+         desconectar em :63; cache em :66 via backup.ts:104-112, só duncan-backup-*.json;
+         id novo em :43; semParar em :69-74). Ficam no nuvemStore só automaticoPausado e
+         protegerDrive (booleanos); conta, ultimoBackup e contaLiberada vão a null
+         (nuvemStore.ts:85-89). Se esse código mudar, rever este trecho. -->
   </li>
   <li>
     Em <strong>Configurações</strong>, na parte do Google Drive, o botão "apagar backup"
