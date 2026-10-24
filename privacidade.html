@@ -328,13 +328,10 @@
     Os áudios do microfone ficam num arquivo temporário do app até o Android limpar o
     cache. Esse botão ainda não os apaga; desinstalar o app ou limpar o cache dele nas
     configurações do Android apaga.
-    <!-- PROVISÓRIO (backlog nº 66, com o Engenheiro): na main b2a5d52, o expo-audio 1.1.1
-         grava em cacheDir/Audio/recording-<UUID>.aac (AudioRecorder.kt:235-239), e nem
-         useDitado.ts (cancelar :88-96, parar :98-114) nem apagarTudo.ts apagam o arquivo.
-         O nº 66 apaga o arquivo no finally de parar/cancelar e a pasta Audio do cache no
-         apagarTudo. Este item fica só se a política for publicada antes de a OTA com o
-         nº 66 estar instalada nos aparelhos (estar na main não basta). Se essa OTA sair
-         antes, tirar este item (até o /nº 66) antes de publicar. -->
+    <!-- PROVISÓRIO (backlog nº 66). Critério: OTA com o nº 66 publicada no canal de
+         produção, ou AAB da loja já com o nº 66. Se a OTA sair antes de publicar, tirar
+         este item. Se sair depois, tirar o item, atualizar a data da política e republicar
+         as duas cópias (habit-quest e duncan) no mesmo dia. -->
   </li>
   <!-- /nº 66 -->
   <li>
