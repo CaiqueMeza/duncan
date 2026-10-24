@@ -89,7 +89,7 @@
     vocês já conversaram e um resumo do que está no app, para ele responder com base nisso:
     seu nome, as tarefas pendentes, os hábitos, as metas (com o porquê de cada uma), o que
     você concluiu na semana e o que você contou no mapa, como a sua linha de chegada. Se
-    você usar o microfone, o áudio também vai, para virar texto.
+    você falar pelo microfone, o áudio também vai, para virar texto.
   </li>
   <li>
     <strong>Carta da semana, se você permitir.</strong> Toda segunda chega uma carta sobre
@@ -123,43 +123,56 @@
          exclusão no sink _Default que descarta todos os logs de requisição deste serviço.
          Os logs da aplicação registram uma linha por pedido (uso, status, ms, modelo,
          tentativas) e os erros, sem IP, user agent, id de instalação nem corpo
-         (PR #311, head 1a2cf26, conferido em 21/10: servidor-ia/src/log.ts:7, lista
-         PERMITIDOS; servidor-ia/src/servidor.ts:118-128, uma linha por pedido). O IP não
-         é gravado: LimitePorIp (servidor-ia/src/limites.ts:253-274) guarda só o hash com
-         sal num Map em memória, até passar de 20 000 entradas ou a instância reiniciar;
-         janela de 10 minutos (config.ts, janelaIpMs). Contador: Firestore, documento
-         <dia>_<sha256("dia:id")> (limites.ts:51-52), campo "expira" dois dias depois do
-         início do dia (limites.ts:249-250); o TTL (scripts/deploy.sh:259) pode levar
-         mais cerca de 24 h, em até três dias. O #311 também guarda um total do app por
-         dia, <dia>_total, com o mesmo TTL e sem id. Sem o Firestore, a contagem fica na
-         memória da instância. Áudio: rota /v1/transcricao (servidor-ia/src/usos.ts:17;
-         src/lib/motorGemini.ts:1343). Exclusão dos request logs: deploy.sh:29, chamada
-         no "preparar" (:253), antes do "publicar"; o "verificar" confere (:361-366). Os
-         números do limite podem mudar antes do merge e não entram neste texto. Conferir
-         de novo se o #311 mudar.
+         (#311 mergeado na main, merge be041b0, conferido na main b2a5d52 em 24/10/2026:
+         servidor-ia/src/log.ts:7, lista PERMITIDOS; servidor-ia/src/servidor.ts:118-128,
+         uma linha por pedido). O IP não é gravado: LimitePorIp
+         (servidor-ia/src/limites.ts:253-274) guarda só o hash com sal num Map em memória,
+         até passar de 20 000 entradas ou a instância reiniciar; janela de 10 minutos
+         (config.ts:74, janelaIpMs). Contador: Firestore, documento <dia>_<sha256("dia:id")>
+         (limites.ts:51-52), campo "expira" dois dias depois do início do dia
+         (limites.ts:249-251); o TTL (scripts/deploy.sh:259) pode levar mais cerca de 24 h,
+         em até três dias. Há também um total do app por dia, <dia>_total, com o mesmo TTL
+         e sem id. Sem o Firestore, a contagem fica na memória da instância. Áudio: rota
+         /v1/transcricao (servidor-ia/src/usos.ts:17; src/lib/motorGemini.ts:1339-1343).
+         Exclusão dos request logs: deploy.sh:29, chamada no "preparar" (:253), antes do
+         "publicar"; o "verificar" confere (:361). Os números do limite (na main, 30 por
+         aparelho e 100 no total por dia, config.ts:71-72) mudam por variável de ambiente
+         e não entram neste texto. Conferir de novo se o servidor mudar.
          Antes de publicar, conferir no Logs Explorer, depois de pedidos reais,
-         que não aparece nenhum log de requisição nem nenhum IP. Publicar só com o
-         servidor no ar e a chave antiga do Gemini revogada. -->
+         que não aparece nenhum log de requisição nem nenhum IP.
+         Conferir no AI Studio que o registro de chamadas (Logs and datasets) está
+         desligado e que o projeto não está no Contributor Tier; se algum ligar, a
+         política e a Segurança dos Dados mudam (com o registro ligado, o projeto guarda
+         pedidos e respostas por até 55 dias; no Contributor Tier, o Google usa os dados
+         como na faixa gratuita: ai.google.dev/gemini-api/docs/logs-policy, conferido em
+         24/10/2026). Publicar só com o servidor no ar, a chave antiga do Gemini revogada
+         e o Caique confirmando que o registro de chamadas do Gemini está desligado e que
+         o projeto não está no Contributor Tier. -->
   </li>
   <!-- /#311 -->
   <!-- #311 -->
   <li>
-    <strong>O que o Google faz com a conversa e a carta.</strong> O Duncan usa o Gemini na
+    <strong>O que o Google faz com a conversa, a carta e o áudio.</strong> O Duncan usa o Gemini na
     modalidade paga, em que o Google atua como prestador de serviço: processa o conteúdo
     só para gerar a resposta, sob os
     <a href="https://ai.google.dev/gemini-api/terms">Termos Adicionais do Gemini API</a> e o
     adendo de proteção de dados do Google como operador. Nessa modalidade, o Google não usa
     o que você envia nem as respostas para melhorar os produtos dele. Ele guarda as
-    mensagens e as respostas por 55 dias, só para detectar e impedir abuso e cumprir
-    obrigações legais; nesse caso, funcionários autorizados do Google podem ler o que for
-    sinalizado pelos filtros de segurança. Não escreva ao Duncan o que você não quer que
-    chegue ao Google.
+    mensagens, o áudio do microfone e as respostas por 55 dias, só para detectar e impedir
+    abuso e cumprir obrigações legais; nesse caso, funcionários autorizados do Google podem
+    examinar o que for sinalizado pelos filtros de segurança. Não escreva nem fale ao
+    Duncan o que você não quer que chegue ao Google.
     <!-- Decisão A (21/10/2026): Gemini pago + servidor intermediário no Cloud Run
          (southamerica-east1), mesmo projeto da chave paga. Base: Gemini API Additional
          Terms (vigentes desde 23/03/2026, "Paid Services") e
          ai.google.dev/gemini-api/docs/usage-policies ("fifty-five (55) days"),
-         conferidos em 21/10/2026. Se a chave do app cair na cota gratuita, este
-         parágrafo deixa de valer. -->
+         conferidos em 21/10/2026 e de novo em 24/10/2026. Os 55 dias valem para
+         "Prompts", "Contextual Information" e "Output"; os Termos Adicionais contam
+         como prompt também os arquivos enviados ("files such as images, videos, or
+         documents"), e o áudio do ditado vai como inlineData no pedido
+         (motorGemini.ts:1339-1352). Revisão humana: "authorized Google employees may
+         assess the flagged content" (usage-policies). Se a chave do app cair na cota
+         gratuita, este parágrafo deixa de valer. -->
   </li>
   <!-- /#311 -->
   <li>
@@ -276,7 +289,7 @@
   <li>Não exibe anúncios.</li>
   <li>Não usa ferramentas de analytics, telemetria ou rastreamento de uso.</li>
   <li>Não coleta localização, contatos, fotos, câmera nem identificadores de publicidade. O microfone só é usado quando você toca nele para falar com o Duncan.</li>
-  <li><!-- #311 -->Não guarda em servidor nosso o que você escreve na conversa, na carta ou no áudio. <!-- /#311 -->As denúncias que você fizer ficam conosco por até 12 meses.</li>
+  <li><!-- #311 -->Não guarda em servidor nosso a conversa, a carta nem o áudio. <!-- /#311 -->As denúncias que você fizer ficam conosco por até 12 meses.</li>
   <li>Não vende nem aluga seus dados. Eles só saem do aparelho nos casos descritos acima.</li>
 </ul>
 
@@ -310,6 +323,20 @@
     Drive. Ele só volta quando você restaurar o backup ou tocar em "salvar agora", para o
     app vazio não tomar o lugar do backup que está lá.
   </li>
+  <!-- nº 66 (PROVISÓRIO) -->
+  <li>
+    Os áudios do microfone ficam num arquivo temporário do app até o Android limpar o
+    cache. Esse botão ainda não os apaga; desinstalar o app ou limpar o cache dele nas
+    configurações do Android apaga.
+    <!-- PROVISÓRIO (backlog nº 66, com o Engenheiro): na main b2a5d52, o expo-audio 1.1.1
+         grava em cacheDir/Audio/recording-<UUID>.aac (AudioRecorder.kt:235-239), e nem
+         useDitado.ts (cancelar :88-96, parar :98-114) nem apagarTudo.ts apagam o arquivo.
+         O nº 66 apaga o arquivo no finally de parar/cancelar e a pasta Audio do cache no
+         apagarTudo. Este item fica só se a política for publicada antes de a OTA com o
+         nº 66 estar instalada nos aparelhos (estar na main não basta). Se essa OTA sair
+         antes, tirar este item (até o /nº 66) antes de publicar. -->
+  </li>
+  <!-- /nº 66 -->
   <li>
     O botão também desconecta a sua conta Google neste aparelho: o app esquece o e-mail
     do Drive e a data do último backup, e sai da sessão do Google. Isso acontece só no
