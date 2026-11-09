@@ -52,7 +52,8 @@
   <strong>Em resumo:</strong> o Duncan não tem conta e guarda o que você cria no seu aparelho.
   O que você escreve só sai dele quando você conversa com o Duncan, quando permite que ele
   escreva a carta da semana com a IA, quando liga o backup no seu Google Drive ou quando
-  denuncia algo que a IA escreveu.
+  denuncia algo que a IA escreveu. Uma tarefa com data também pode ir para uma agenda do
+  celular, se você ligar essa opção.
 </div>
 
 <h2>Quem é o responsável</h2>
@@ -76,7 +77,8 @@
   Não existe cadastro nem conta do Duncan.<!-- #311 --> Há um servidor só para levar a conversa, a
   carta e o áudio até a IA. Ele não guarda o que você escreve. As denúncias que você fizer
   não passam por esse servidor: ficam conosco por até 12 meses (veja abaixo).<!-- /#311 -->
-  A sua conta Google só entra no Duncan se você ligar o backup no Drive.
+  A sua conta Google só entra no Duncan se você ligar o backup no Drive. A agenda, se você
+  ligar, usa uma agenda que já está no celular, sem um login novo.
 </p>
 
 <h2>O que sai do aparelho</h2>
@@ -150,6 +152,48 @@
          o projeto não está no Contributor Tier. -->
   </li>
   <!-- /#311 -->
+  <!-- #406 -->
+  <li>
+    <strong>Verificação de que o pedido vem do Duncan.</strong> Para o servidor do Duncan
+    atender só o aplicativo original, e não quem tente usá-lo por fora, o app usa o Firebase
+    App Check com a Play Integrity, dois serviços do Google. Na primeira vez que o app fala
+    com a IA, e depois de tempos em tempos enquanto ele está aberto, o Google Play confere
+    se este é o Duncan original, sem alteração, num aparelho Android que passa nas checagens
+    do Google. Para isso, o Google recebe dados técnicos do app (o nome do pacote, a versão e
+    o certificado de assinatura), um atestado do aparelho gerado pelo Google Play services e
+    a situação da licença do app nas contas Google do celular. Em troca, o app recebe um
+    comprovante temporário, que vai junto com cada pedido à IA. O servidor do Duncan só
+    confere se o comprovante é válido e anota se foi válido, inválido ou ausente; o
+    comprovante não é guardado. Nada do que você escreve ou fala vai para essa verificação.
+    Um pedido sem comprovante válido pode ser recusado. A Play Integrity faz parte da Google
+    Play e segue os <a href="https://play.google.com/about/play-terms/">Termos de Serviço da Google Play</a> e a
+    <a href="https://policies.google.com/privacy">Política de Privacidade do Google</a>.
+    <!-- PENDENTE (#406, rascunho, head 5147ab8, ainda fora da main 0d2a503): este item só
+         vale com o #406 no AAB. Se o #406 não entrar, tirar o item inteiro (entre os
+         marcadores #406). Conferido no head 5147ab8 em 09/11/2026: src/lib/appCheck.ts
+         (provedor playIntegrity quando __DEV__ é falso; initializeAppCheck só na primeira
+         chamada à IA, com isTokenAutoRefreshEnabled: true; espera do token de até 2 s);
+         src/lib/clienteIA.ts:270 e :293 (header X-Firebase-AppCheck, só quando há token);
+         servidor-ia/src/appcheck.ts (verifyToken sem consume, pelas chaves públicas
+         firebaseappcheck.googleapis.com/v1/jwks; nada do aparelho vai ao Google pelo
+         servidor); servidor-ia/src/log.ts (campo appCheck: valido, invalido ou ausente; o
+         token não vai para o log); servidor.ts (APP_CHECK_EXIGIR=true responde 401). O que
+         a Play Integrity recebe: developer.android.com/google/play/integrity/terms,
+         "Data safety", conferido em 09/11/2026 (metadados do app, licença, atestado do
+         aparelho; sem envio a terceiros; apagado depois de prazo fixo). O SDK do App Check
+         manda também o "Firebase user agent" (modelo e versão do sistema, sem
+         identificador): firebase.google.com/docs/android/play-data-disclosure, 09/11/2026.
+         PENDENTE (Engenheiro): com o google-services.json, o Firebase passa a inicializar
+         ao abrir o app, e o firebase-messaging que vem com o expo-notifications é
+         "alwaysEager", com auto-init de token ligado por padrão. Confirmar no aparelho
+         (logcat/tráfego) se o app passa a gerar token do FCM e id de instalação do
+         Firebase (FID) sem push nenhum; se sim, desligar com
+         firebase_messaging_auto_init_enabled=false no manifesto, ou esta política e a
+         Segurança dos Dados mudam (e a frase de Notificações deixa de valer).
+         PENDENTE (advogado): o papel do Google (operador no Firebase; a Play Integrity
+         roda sob os termos da própria Google Play). -->
+  </li>
+  <!-- /#406 -->
   <!-- #311 -->
   <li>
     <strong>O que o Google faz com a conversa, a carta e o áudio.</strong> O Duncan usa o Gemini na
@@ -224,9 +268,11 @@
        internacional (LGPD, arts. 7º, 11 e 33). -->
 </p>
 
-<!-- PENDENTE (PR #145, head cdfe820, ainda aberto): a seção "Agenda do celular" fica
-     fora até o #145 estar no APK. Texto pronto para quando entrar (rever contra o código):
-     <h2>Agenda do celular, se você ligar</h2>
+<!-- #145: na main desde 810b42a (01/11/2026) e no APK preview e74a5c6e. Reconferido
+     na main 0d2a503 em 09/11/2026: agendaDoCelular.ts, SecaoAgenda.tsx e agendaStore.ts
+     sem mudança desde cdfe820; "Apagar todos os dados" chama
+     useAgendaStore.getState().desconectar() antes de limpar as tarefas
+     (src/lib/apagarTudo.ts:41), e os eventos ficam na agenda. -->
 <h2>Agenda do celular, se você ligar</h2>
 <p>
   Em Configurações, a chave "Tarefas no Google Agenda" fica desligada até você ligar.
@@ -257,13 +303,10 @@
   O nome da agenda escolhida fica neste aparelho, só para mostrar qual está ligada, e
   pode incluir o e-mail da conta. Essa ligação não entra no backup. Dá para desligar
   quando quiser. Ao desligar, o Duncan pergunta se tira da agenda os eventos das tarefas
-  que ainda estão pendentes. [o que o "Apagar todos os dados" faz com a agenda: conferir no código do #145 quando entrar].
+  que ainda estão pendentes. "Apagar todos os dados" desliga a agenda antes de apagar o
+  resto, e os eventos que o Duncan já gravou ficam nela: para tirá-los, use o aplicativo
+  de agenda.
 </p>
-     Quando o #145 entrar, também: no resumo, "Também sai quando você pede que uma tarefa
-     com data vá para uma agenda do celular."; em "Não existe cadastro", "A agenda, se
-     você ligar, usa uma agenda que já está no celular, sem um login novo."; em
-     Permissões, o item "Agenda"; em "Como apagar", desinstalar não apaga os eventos já
-     gravados e desligar a agenda pergunta se os eventos das tarefas pendentes saem. -->
 
 <h2>Notificações</h2>
 <p>
@@ -271,6 +314,9 @@
   aparelho. Nenhum lembrete chega pela internet, e o app não se cadastra em nenhum
   serviço de notificações. Durante o foco, se você permitir, o app liga o
   Não perturbe e o desliga no fim.
+  <!-- PENDENTE (#406): ver o PENDENTE do Engenheiro no item da verificação do app. Se o
+       Firebase passar a gerar token do FCM, "não se cadastra em nenhum serviço de
+       notificações" deixa de ser verdade. -->
 </p>
 
 <h2>Bem-estar</h2>
@@ -299,6 +345,8 @@
     denúncia e a verificação de atualização.</li>
   <li><strong>Notificações:</strong> para os lembretes.</li>
   <li><strong>Microfone:</strong> só quando você toca nele para falar com o Duncan.</li>
+  <li><strong>Agenda:</strong> só se você ligar as tarefas na agenda, para ler e gravar na
+    agenda que você escolher.</li>
   <li><strong>Alarmes exatos:</strong> para avisar o fim do bloco de foco na hora certa,
     se o celular permitir.</li>
   <li><strong>Reinício do celular:</strong> para religar os lembretes e o bloco de foco
@@ -328,9 +376,14 @@
     Os áudios do microfone ficam num arquivo temporário do app até o Android limpar o
     cache. Esse botão ainda não os apaga; desinstalar o app ou limpar o cache dele nas
     configurações do Android apaga.
-    <!-- PROVISÓRIO (backlog nº 66). Critério: OTA com o nº 66 publicada no canal de
-         produção, ou AAB da loja já com o nº 66. Se a OTA sair antes de publicar, tirar
-         este item. Se sair depois, tirar o item, atualizar a data da política e republicar
+    <!-- PROVISÓRIO (backlog nº 66). O código está na main: #353, merge 9f1c8a8 (27/10),
+         e o caso da conversa fechada no meio da gravação, nº 71, #398, merge 75828fc
+         (09/11). O 9f1c8a8 já está no APK preview e74a5c6e (main 810b42a), mas preview não
+         conta. Pelo backlog da main 0d2a503 (09/11/2026), ainda sem OTA no canal production e
+         sem AAB da loja.
+         Critério: OTA com o 9f1c8a8 publicada no canal production, ou AAB da loja feito de
+         uma main que já contenha o 9f1c8a8. Se isso acontecer antes de publicar, tirar este
+         item. Se acontecer depois, tirar o item, atualizar a data da política e republicar
          as duas cópias (habit-quest e duncan) no mesmo dia. -->
   </li>
   <!-- /nº 66 -->
@@ -349,7 +402,10 @@
          desconectar em :63; cache em :66 via backup.ts:104-112, só duncan-backup-*.json;
          id novo em :43; semParar em :69-74). Ficam no nuvemStore só automaticoPausado e
          protegerDrive (booleanos); conta, ultimoBackup e contaLiberada vão a null
-         (nuvemStore.ts:85-89). Se esse código mudar, rever este trecho. -->
+         (nuvemStore.ts:85-89). Se esse código mudar, rever este trecho.
+         Reconferido na main 0d2a503 (09/11/2026): as linhas mudaram (apagarTodosOsDados em
+         apagarTudo.ts:32; não faz nada se o banco não abriu, :38; agenda desligada em :41;
+         id novo em :59; Google e cache em :79-82; áudios do ditado em :85, nº 66). -->
   </li>
   <li>
     Em <strong>Configurações</strong>, na parte do Google Drive, o botão "apagar backup"
@@ -366,7 +422,8 @@
     apagá-la, e o app para de salvar novas.
   </li>
   <li>
-    Desinstalar o aplicativo remove o banco de dados local junto.
+    Desinstalar o aplicativo remove o banco de dados local junto. Os eventos que o Duncan
+    gravou na agenda do celular ficam nela.
   </li>
   <li>
     As denúncias que chegaram a nós são apagadas se você pedir pelo contato abaixo.
