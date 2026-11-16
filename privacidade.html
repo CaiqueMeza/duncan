@@ -55,6 +55,35 @@
   denuncia algo que a IA escreveu. Uma tarefa com data também pode ir para uma agenda do
   celular, se você ligar essa opção.
 </div>
+<!-- allowBackup (A1, inativo; NÃO decidido: Engenheiro, PO e Caique decidem antes do build
+     do AAB, passo 5 do caminho no play-console.md). Na main 87a53ef o app.json não define
+     android.allowBackup e o Expo grava true (AllowBackup.js:26), sem fullBackupContent nem
+     dataExtractionRules: o backup automático do Android copia files/ (o SQLite) e as
+     preferências para a conta Google da pessoa e os devolve quando o app é instalado de
+     novo (developer.android.com/identity/data/autobackup, "Restore schedule"). As frases
+     visíveis abaixo ficam como estão até a decisão.
+     SE O BACKUP FICAR LIGADO, trocar nas duas cópias, com data nova:
+     (1) Resumo: "O que você escreve só sai dele quando" passa a "O que você escreve só
+         sai dele, pelo Duncan, quando"; e, no fim do resumo, acrescentar: "Se o backup do
+         Android estiver ligado no seu celular, o próprio Android também guarda uma cópia
+         na sua conta Google e a devolve quando o app é instalado de novo."
+     (2) Desinstalar: "Desinstalar o aplicativo remove o banco de dados local junto." passa
+         a "Desinstalar o aplicativo remove o banco de dados local junto. Se o backup do
+         Android estiver ligado no seu celular, a cópia que ele guardou na sua conta Google
+         pode voltar quando você instalar o Duncan de novo, neste ou em outro aparelho.
+         Para ela não voltar, desligue o backup do Android antes de reinstalar."
+     (3) Apagar todos os dados: no fim do primeiro item de "Como apagar", acrescentar:
+         "Esse botão não apaga a cópia que o backup do Android talvez já tenha guardado na
+         sua conta Google. Ela é trocada pelo app vazio no próximo backup do Android; até
+         lá, se você reinstalar o app, os dados antigos podem voltar."
+     (4) Rodapé "Seus dados ficam no seu aparelho, salvo o que está descrito acima": fica
+         como está, porque a frase nova do resumo vem acima.
+     Antes de ativar: conferir num aparelho se o número desta instalação (clienteIA.ts,
+     driver de armazenamento) volta com o backup; se voltar, o comentário de clienteIA.ts
+     ("outro aparelho restaurado não herda a cota") deixa de valer, mas nenhuma frase
+     visível depende disso.
+     SE O BACKUP FOR DESLIGADO (allowBackup false) ou limitado para não levar o banco nem as
+     preferências: nenhuma frase visível muda; só a data e este comentário saem. -->
 
 <h2>Quem é o responsável</h2>
 <p>
@@ -107,7 +136,7 @@
        servidor-ia/src/usos.ts:16-17). O AAB do teste fechado sai sem ela. Este item entra
        no ar (sai do comentário) com a versão que trouxer o nº 80, antes do deploy da rota
        nova e da OTA. A frase do meio é igual, palavra por palavra, ao aviso do app escrito
-       pela Cronista (16/11/2026); se o aviso mudar, esta frase muda junto. A última
+       pela Cronista (16/11/2026); se o aviso mudar, esta frase muda junto. As últimas
        frases do item (data do aparelho, campo "hoje"; o marcador "tipo: habito"; o campo
        "modo", versao ou revisar; os apelidos m1/t3 no lugar dos ids reais, que não vão;
        e o id de instalação só no cabeçalho, para o contador, nunca ao Gemini; decisão do
@@ -433,8 +462,8 @@
   </li>
   <li>
     Os backups que já estão no Drive não saem com esse botão. Para apagá-los, use "Apagar
-    backup do Drive", em Configurações (veja o item abaixo). As denúncias que já foram enviadas saem se você pedir a
-    conta.duncan@gmail.com. A ação não pode ser desfeita.
+    backup do Drive", em Configurações (veja o item abaixo). As denúncias que já foram enviadas saem se você pedir pelo e-mail
+    <a href="mailto:conta.duncan@gmail.com">conta.duncan@gmail.com</a>. A ação não pode ser desfeita.
     <!-- Conferido na main c921469 (#314 em a90c429, #311 já mergeado): src/lib/apagarTudo.ts
          29-67 (signOut em :64 via driveBackup.ts:59-62, sem revokeAccess; nuvemStore
          desconectar em :63; cache em :66 via backup.ts:104-112, só duncan-backup-*.json;

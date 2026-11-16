@@ -1,6 +1,6 @@
-# Ordem do Dia — página pública
+# Duncan — página pública
 
-Hospeda a **política de privacidade** do aplicativo Ordem do Dia, exigida pelo
+Hospeda a **política de privacidade** do aplicativo Duncan, exigida pelo
 Google Play e pela App Store.
 
 - https://caiquemeza.github.io/duncan/privacidade.html
