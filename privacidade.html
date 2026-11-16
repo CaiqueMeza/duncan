@@ -55,20 +55,31 @@
   denuncia algo que a IA escreveu. Uma tarefa com data também pode ir para uma agenda do
   celular, se você ligar essa opção.
 </div>
-<!-- allowBackup (A1, inativo; NÃO decidido: Engenheiro, PO e Caique decidem antes do build
-     do AAB, passo 5 do caminho no play-console.md). Na main 87a53ef o app.json não define
+<!-- allowBackup (A1): DECIDIDO em 16/11/2026. O PO desligou o backup do Android, e o
+     Engenheiro abriu o habit-quest #447 (rascunho, head 35d097f, base 87a53ef), que põe
+     "allowBackup": false em expo.android no app.json; o plugin AllowBackup do Expo grava
+     android:allowBackup="false". As frases visíveis desta política (resumo, "Desinstalar",
+     "Apagar todos os dados") só são verdadeiras com o #447 na main ANTES do build do AAB e
+     com o AAB feito de um commit que o contenha (passo 6 do caminho no play-console.md).
+     Com o #447, nenhuma frase visível muda. Transferência direta entre aparelhos (D2D):
+     em alguns fabricantes o allowBackup false não a desliga (página do Auto Backup);
+     é cópia direta para um aparelho novo da própria pessoa, sem nuvem, e nenhuma frase
+     visível fica falsa; fechar também esse caminho é decisão do Engenheiro.
+     O resto deste comentário é SÓ FALLBACK, inativo: vale apenas se o #447 não entrar
+     antes do build. Na main 87a53ef o app.json não define
      android.allowBackup e o Expo grava true (AllowBackup.js:26), sem fullBackupContent nem
      dataExtractionRules: o backup automático do Android copia files/ (o SQLite) e as
      preferências para a conta Google da pessoa e os devolve quando o app é instalado de
      novo (developer.android.com/identity/data/autobackup, "Restore schedule"). As frases
-     visíveis abaixo ficam como estão até a decisão.
-     SE O BACKUP FICAR LIGADO, trocar nas duas cópias, com data nova:
+     visíveis abaixo ficam como estão.
+     FALLBACK, SÓ SE O BACKUP FICAR LIGADO (sem o #447 no commit do AAB), trocar nas duas
+     cópias, com data nova:
      (1) Resumo: "O que você escreve só sai dele quando" passa a "O que você escreve só
          sai dele, pelo Duncan, quando"; e, no fim do resumo, acrescentar: "Se o backup do
          Android estiver ligado no seu celular, o próprio Android também guarda uma cópia
          na sua conta Google e a devolve quando o app é instalado de novo."
-     (2) Desinstalar: "Desinstalar o aplicativo remove o banco de dados local junto." passa
-         a "Desinstalar o aplicativo remove o banco de dados local junto. Se o backup do
+     (2) Desinstalar: depois da frase do backup no Google Drive ("... como explicado
+         acima."), acrescentar: "Se o backup do
          Android estiver ligado no seu celular, a cópia que ele guardou na sua conta Google
          pode voltar quando você instalar o Duncan de novo, neste ou em outro aparelho.
          Para ela não voltar, desligue o backup do Android antes de reinstalar."
@@ -82,8 +93,8 @@
      driver de armazenamento) volta com o backup; se voltar, o comentário de clienteIA.ts
      ("outro aparelho restaurado não herda a cota") deixa de valer, mas nenhuma frase
      visível depende disso.
-     SE O BACKUP FOR DESLIGADO (allowBackup false) ou limitado para não levar o banco nem as
-     preferências: nenhuma frase visível muda; só a data e este comentário saem. -->
+     COM O #447 (backup desligado, a decisão): nenhuma frase visível muda; o fallback acima
+     fica inativo. -->
 
 <h2>Quem é o responsável</h2>
 <p>
@@ -489,7 +500,10 @@
     apagá-la, e o app para de salvar novas.
   </li>
   <li>
-    Desinstalar o aplicativo remove o banco de dados local junto. Os eventos que o Duncan
+    Desinstalar o aplicativo remove o banco de dados local junto. Se você ligou o backup no
+    Google Drive, a cópia que está lá não sai junto e continua na sua conta. Para apagá-la,
+    toque em "Apagar backup do Drive", em Configurações, antes de desinstalar, ou apague
+    depois pelo Drive no navegador, como explicado acima. Os eventos que o Duncan
     gravou na agenda do celular ficam nela.
   </li>
   <li>
