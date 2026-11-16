@@ -108,8 +108,12 @@
        no ar (sai do comentário) com a versão que trouxer o nº 80, antes do deploy da rota
        nova e da OTA. A frase do meio é igual, palavra por palavra, ao aviso do app escrito
        pela Cronista (16/11/2026); se o aviso mudar, esta frase muda junto. A última
-       frase do item (data do aparelho, campo "hoje", e o marcador "tipo: habito") é
-       informação a mais da política, sem contrariar o aviso. Campos: estudo
+       frases do item (data do aparelho, campo "hoje"; o marcador "tipo: habito"; o campo
+       "modo", versao ou revisar; os apelidos m1/t3 no lugar dos ids reais, que não vão;
+       e o id de instalação só no cabeçalho, para o contador, nunca ao Gemini; decisão do
+       PO de 16/11) são informação a mais da política, sem contrariar o aviso. O id de
+       instalação e o contador com hash já estão declarados no item do servidor e na
+       Segurança dos Dados (play-console.md, 4.1 e 4.2, IDs do dispositivo). Campos: estudo
        do Engenheiro de 16/11 (seção 3, rota POST /v1/meta com campos nomeados). Contador
        próprio de 4 pedidos por dia por aparelho, pelo hash do id de instalação, como o da
        conversa; os números não entram no texto. Ao ativar, também: no resumo, depois de
@@ -129,7 +133,11 @@
     tarefas. O servidor do Duncan só leva e traz, e não guarda nada do que você escreve.
     Junto vão a data do aparelho, para o Duncan entender o prazo, e, quando um marco se
     cumpre por um hábito, só a indicação de que ele é de hábito, sem o nome nem as vezes
-    desse hábito.
+    desse hábito. Vão também duas informações técnicas: se você pediu uma versão nova ou
+    uma revisão, e apelidos curtos no lugar dos códigos internos dos marcos e das tarefas
+    (os códigos de verdade não saem do aparelho). Para o limite de pedidos por dia, vale o
+    mesmo número desta instalação explicado no item do servidor do Duncan: ele vai só
+    para o servidor do Duncan, para a contagem, e não vai ao Gemini.
   </li>
   /#n80 -->
   <!-- #311 -->
