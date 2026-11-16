@@ -102,6 +102,36 @@
     carta chega do mesmo jeito, com os números da semana e um conselho pronto, e nada é
     enviado. Dá para mudar quando quiser, em Configurações.
   </li>
+  <!-- #n80 (inativo): a ajuda da meta, nº 80 do backlog, ainda não está no código da main
+       (87a53ef, 16/11/2026: o servidor só tem as rotas conversa, transcricao e carta,
+       servidor-ia/src/usos.ts:16-17). O AAB do teste fechado sai sem ela. Este item entra
+       no ar (sai do comentário) com a versão que trouxer o nº 80, antes do deploy da rota
+       nova e da OTA. A frase do meio é igual, palavra por palavra, ao aviso do app escrito
+       pela Cronista (16/11/2026); se o aviso mudar, esta frase muda junto. A última
+       frase do item (data do aparelho, campo "hoje", e o marcador "tipo: habito") é
+       informação a mais da política, sem contrariar o aviso. Campos: estudo
+       do Engenheiro de 16/11 (seção 3, rota POST /v1/meta com campos nomeados). Contador
+       próprio de 4 pedidos por dia por aparelho, pelo hash do id de instalação, como o da
+       conversa; os números não entram no texto. Ao ativar, também: no resumo, depois de
+       "com a IA,", acrescentar " quando pede a ajuda dele numa meta,"; em "Não existe
+       cadastro", "levar a conversa, a carta e o áudio" passa a "levar a conversa, a carta,
+       a ajuda da meta e o áudio"; no item do servidor, "A conversa, a carta da semana e o
+       áudio do microfone" passa a "A conversa, a carta da semana, a ajuda da meta e o
+       áudio do microfone"; no item do Google, "as mensagens, o áudio do microfone e as
+       respostas" passa a "as mensagens, o áudio do microfone, o que vai da meta e as
+       respostas".
+  <li>
+    <strong>Ajuda com uma meta, se você pedir.</strong> Quando você pede ao Duncan uma
+    versão melhor de uma meta ou uma revisão dela, o app avisa antes o que vai. Desta meta,
+    vão para o Google, pelo servidor do Duncan: o título, a descrição, o porquê, o prazo e a
+    medida; os nomes dos marcos e das tarefas, e se cada um já foi feito; e o que você
+    recusou da última vez. Não vão o seu nome, os seus hábitos nem as suas outras metas e
+    tarefas. O servidor do Duncan só leva e traz, e não guarda nada do que você escreve.
+    Junto vão a data do aparelho, para o Duncan entender o prazo, e, quando um marco se
+    cumpre por um hábito, só a indicação de que ele é de hábito, sem o nome nem as vezes
+    desse hábito.
+  </li>
+  /#n80 -->
   <!-- #311 -->
   <li>
     <strong>O servidor do Duncan.</strong> A conversa, a carta da semana e o áudio do
@@ -150,9 +180,11 @@
          política e a Segurança dos Dados mudam (com o registro ligado, o projeto guarda
          pedidos e respostas por até 55 dias; no Contributor Tier, o Google usa os dados
          como na faixa gratuita: ai.google.dev/gemini-api/docs/logs-policy, conferido em
-         24/10/2026). Publicar só com o servidor no ar, a chave antiga do Gemini revogada
-         e o Caique confirmando que o projeto não está no Contributor Tier (o registro de
-         chamadas desligado e a faixa paga já foram conferidos em 09/11/2026). -->
+         24/10/2026). Servidor no ar desde o go-live de 26/10/2026 e chave antiga do Gemini
+         revogada em 30/10/2026, conferidos pelo Engenheiro em 16/11/2026. O registro de
+         chamadas desligado e a faixa paga foram conferidos pelo Caique em 09/11/2026.
+         Publicar só depois de conferir os logs no Logs Explorer (acima) e de o Caique
+         confirmar que o projeto não está no Contributor Tier. -->
   </li>
   <!-- /#311 -->
   <!-- #406 -->
@@ -171,28 +203,28 @@
     Um pedido sem comprovante válido pode ser recusado. A Play Integrity faz parte da Google
     Play e segue os <a href="https://play.google.com/about/play-terms/">Termos de Serviço da Google Play</a> e a
     <a href="https://policies.google.com/privacy">Política de Privacidade do Google</a>.
-    <!-- PENDENTE (#406, rascunho, head 5147ab8, ainda fora da main 0d2a503): este item só
-         vale com o #406 no AAB. Se o #406 não entrar, tirar o item inteiro (entre os
-         marcadores #406). Conferido no head 5147ab8 em 09/11/2026: src/lib/appCheck.ts
-         (provedor playIntegrity quando __DEV__ é falso; initializeAppCheck só na primeira
-         chamada à IA, com isTokenAutoRefreshEnabled: true; espera do token de até 2 s);
-         src/lib/clienteIA.ts:270 e :293 (header X-Firebase-AppCheck, só quando há token);
-         servidor-ia/src/appcheck.ts (verifyToken sem consume, pelas chaves públicas
-         firebaseappcheck.googleapis.com/v1/jwks; nada do aparelho vai ao Google pelo
-         servidor); servidor-ia/src/log.ts (campo appCheck: valido, invalido ou ausente; o
-         token não vai para o log); servidor.ts (APP_CHECK_EXIGIR=true responde 401). O que
-         a Play Integrity recebe: developer.android.com/google/play/integrity/terms,
-         "Data safety", conferido em 09/11/2026 (metadados do app, licença, atestado do
-         aparelho; sem envio a terceiros; apagado depois de prazo fixo). O SDK do App Check
-         manda também o "Firebase user agent" (modelo e versão do sistema, sem
-         identificador): firebase.google.com/docs/android/play-data-disclosure, 09/11/2026.
-         PENDENTE (Engenheiro): com o google-services.json, o Firebase passa a inicializar
-         ao abrir o app, e o firebase-messaging que vem com o expo-notifications é
-         "alwaysEager", com auto-init de token ligado por padrão. Confirmar no aparelho
-         (logcat/tráfego) se o app passa a gerar token do FCM e id de instalação do
-         Firebase (FID) sem push nenhum; se sim, desligar com
-         firebase_messaging_auto_init_enabled=false no manifesto, ou esta política e a
-         Segurança dos Dados mudam (e a frase de Notificações deixa de valer).
+    <!-- #406 mergeado na main em 09/11/2026 (merge 43c6421, head e0cef84); vai no AAB do
+         teste fechado, feito da main (87a53ef ou posterior). Fase 1: o servidor só registra
+         (APP_CHECK_EXIGIR ausente ou false); antes do pedido de produção, a exigência liga
+         (APP_CHECK_EXIGIR=true) e o pedido sem comprovante válido recebe 401. A frase "Um
+         pedido sem comprovante válido pode ser recusado" vale nas duas fases e não muda.
+         Conferido na main 87a53ef em 16/11/2026: src/lib/appCheck.ts (provedor
+         playIntegrity quando __DEV__ é falso, :37; isTokenAutoRefreshEnabled: true, :50;
+         espera do token de até 2 s, :17); src/lib/clienteIA.ts:270 e :293 (header
+         X-Firebase-AppCheck, só quando há token); servidor-ia/src/appcheck.ts (verifyToken
+         sem consume, pelas chaves públicas firebaseappcheck.googleapis.com/v1/jwks; nada do
+         aparelho vai ao Google pelo servidor); servidor-ia/src/log.ts (campo appCheck:
+         valido, invalido ou ausente; o token não vai para o log). O que a Play Integrity
+         recebe: developer.android.com/google/play/integrity/terms, "Data safety",
+         conferido em 09/11/2026. O SDK do App Check manda também o "Firebase user agent"
+         (modelo e versão do sistema, sem identificador):
+         firebase.google.com/docs/android/play-data-disclosure, 09/11/2026.
+         FCM e FID: o plugin plugins/sem-inicio-automatico-do-firebase.js (app.json, na main)
+         grava firebase_messaging_auto_init_enabled=false no manifesto, e o app nunca pede
+         token de push (os lembretes são locais). Relato do Engenheiro no head e5afd54 do
+         #406. PENDENTE (Engenheiro): confirmar no logcat do Razr, com o AAB ou APK real,
+         que não sai token do FCM nem FID. Se sair, esta política e a Segurança dos Dados
+         mudam (e a frase de Notificações deixa de valer).
          PENDENTE (advogado): o papel do Google (operador no Firebase; a Play Integrity
          roda sob os termos da própria Google Play). -->
   </li>
@@ -317,9 +349,11 @@
   aparelho. Nenhum lembrete chega pela internet, e o app não se cadastra em nenhum
   serviço de notificações. Durante o foco, se você permitir, o app liga o
   Não perturbe e o desliga no fim.
-  <!-- PENDENTE (#406): ver o PENDENTE do Engenheiro no item da verificação do app. Se o
-       Firebase passar a gerar token do FCM, "não se cadastra em nenhum serviço de
-       notificações" deixa de ser verdade. -->
+  <!-- #406: o auto-init do FCM fica desligado (firebase_messaging_auto_init_enabled=false,
+       plugins/sem-inicio-automatico-do-firebase.js) e o app nunca pede token de push.
+       PENDENTE (Engenheiro): confirmar no logcat do aparelho com o build real. Se o Firebase
+       gerar token do FCM, "não se cadastra em nenhum serviço de notificações" deixa de ser
+       verdade. -->
 </p>
 
 <h2>Bem-estar</h2>
@@ -374,22 +408,15 @@
     Drive. Ele só volta quando você restaurar o backup ou tocar em "salvar agora", para o
     app vazio não tomar o lugar do backup que está lá.
   </li>
-  <!-- nº 66 (PROVISÓRIO) -->
-  <li>
-    Os áudios do microfone ficam num arquivo temporário do app até o Android limpar o
-    cache. Esse botão ainda não os apaga; desinstalar o app ou limpar o cache dele nas
-    configurações do Android apaga.
-    <!-- PROVISÓRIO (backlog nº 66). O código está na main: #353, merge 9f1c8a8 (27/10),
-         e o caso da conversa fechada no meio da gravação, nº 71, #398, merge 75828fc
-         (09/11). O 9f1c8a8 já está no APK preview e74a5c6e (main 810b42a), mas preview não
-         conta. Pelo backlog da main 0d2a503 (09/11/2026), ainda sem OTA no canal production e
-         sem AAB da loja.
-         Critério: OTA com o 9f1c8a8 publicada no canal production, ou AAB da loja feito de
-         uma main que já contenha o 9f1c8a8. Se isso acontecer antes de publicar, tirar este
-         item. Se acontecer depois, tirar o item, atualizar a data da política e republicar
-         as duas cópias (habit-quest e duncan) no mesmo dia. -->
-  </li>
-  <!-- /nº 66 -->
+  <!-- nº 66: o item provisório sobre os áudios do microfone saiu em 16/11/2026. Esta versão
+       da política vale para o AAB do teste fechado, feito da main 87a53ef, que contém o
+       9f1c8a8 (#353, nº 66) e o 75828fc (#398, nº 71): parar e cancelar apagam o arquivo, as
+       sobras somem ao abrir a conversa e "Apagar todos os dados" apaga cache/Audio e
+       cache/ExpoAudio (src/lib/audioDoDitado.ts, apagarTudo.ts:85). Se o build que for ao
+       teste fechado não contiver o 9f1c8a8, o item volta antes de publicar, em "Como
+       apagar", depois do primeiro item: "Os áudios do microfone ficam num arquivo
+       temporário do app até o Android limpar o cache. Esse botão ainda não os apaga;
+       desinstalar o app ou limpar o cache dele nas configurações do Android apaga." -->
   <li>
     O botão também desconecta a sua conta Google neste aparelho: o app esquece o e-mail
     do Drive e a data do último backup, e sai da sessão do Google. Isso acontece só no
