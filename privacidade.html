@@ -454,7 +454,7 @@
     salvou ou enviou para outro lugar fica onde está. O app volta para a apresentação. Ficam só as suas
     escolhas de lembrete e um aviso, sem dado pessoal, que segura o backup automático no
     Drive. Ele só volta quando você restaurar o backup ou tocar em "salvar agora", para o
-    app vazio não tomar o lugar do backup que está lá.
+    app vazio não tomar o lugar do backup que está lá. Apagar todos os dados não pode ser desfeito.
   </li>
   <!-- nº 66: o item provisório sobre os áudios do microfone saiu em 16/11/2026. Esta versão
        da política vale para o AAB do teste fechado, feito da main 87a53ef, que contém o
@@ -474,7 +474,7 @@
   <li>
     Os backups que já estão no Drive não saem com esse botão. Para apagá-los, use "Apagar
     backup do Drive", em Configurações (veja o item abaixo). As denúncias que já foram enviadas saem se você pedir pelo e-mail
-    <a href="mailto:conta.duncan@gmail.com">conta.duncan@gmail.com</a>. A ação não pode ser desfeita.
+    <a href="mailto:conta.duncan@gmail.com">conta.duncan@gmail.com</a>.
     <!-- Conferido na main c921469 (#314 em a90c429, #311 já mergeado): src/lib/apagarTudo.ts
          29-67 (signOut em :64 via driveBackup.ts:59-62, sem revokeAccess; nuvemStore
          desconectar em :63; cache em :66 via backup.ts:104-112, só duncan-backup-*.json;
@@ -502,7 +502,7 @@
   <li>
     Desinstalar o aplicativo remove o banco de dados local junto. Se você ligou o backup no
     Google Drive, a cópia que está lá não sai junto e continua na sua conta. Para apagá-la,
-    toque em "Apagar backup do Drive", em Configurações, antes de desinstalar, ou apague
+    toque no botão de apagar o backup, em Configurações, antes de desinstalar, ou apague
     depois pelo Drive no navegador, como explicado acima. Os eventos que o Duncan
     gravou na agenda do celular ficam nela.
   </li>
