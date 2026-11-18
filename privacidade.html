@@ -195,9 +195,26 @@
     memória do servidor, até ele reiniciar. Essa contagem some em até três dias. O seu
     endereço IP é usado na hora, contra abuso, só na memória do servidor e de forma
     embaralhada, e não é gravado. O registro do
-    servidor tem só dados técnicos de cada pedido (o tipo, o resultado e o tempo de resposta),
-    sem nenhum dado pessoal.
-    <!-- PENDENTE (conferir antes de publicar): por padrão, o log de requisições do
+    servidor tem só dados técnicos de cada pedido, como o tipo, o resultado, o tempo de
+    resposta e o tipo de erro, quando há. Ele não tem o que você escreveu, o seu IP nem o
+    número desta instalação, e fica guardado por 30 dias, o prazo padrão do Google Cloud.
+    O registro automático de cada acesso ao servidor, que guardaria o IP e a identificação
+    do app, fica desligado.
+    <!-- Logs CONFERIDOS no Logs Explorer em 18/11/2026 pelo Engenheiro (informado pelo PO):
+         30 dias, de 23/10 a 18/11/2026, 173 entradas do duncan-ia. Nenhuma tem texto da
+         pessoa, IP de usuário nem id do aparelho. Os logs da aplicação têm só metadados
+         técnicos (evento, status, duração, modelo, contagem de uso, tentativas, tipo de
+         erro). Os logs de sistema do Cloud Run não têm dado de usuário. Os logs de
+         auditoria só mostram a conta e o IP do próprio Caique nos deploys. Os logs de
+         requisição (que guardariam IP e user agent) estão desligados pela exclusão
+         duncan-ia-requests no sink _Default. O contador de uso fica no Firestore, fora dos
+         logs. Prazo: 30 dias é o padrão do bucket _Default num projeto
+         (cloud.google.com/logging/quotas, "Logs retention periods", lida em 18/11/2026;
+         configurável de 1 a 3650 dias). O repositório não muda esse prazo (deploy.sh só cria
+         a exclusão; servidor-ia/README.md:132 também cita 30 dias). A configuração real do
+         bucket não foi lida no console; se alguém mudar a retenção, este texto muda junto.
+         Os logs de auditoria (_Required, 400 dias) não têm dado de quem usa o app.
+         Histórico da conferência: por padrão, o log de requisições do
          Cloud Run grava httpRequest.remoteIp e userAgent (bucket _Default, 30 dias). O
          deploy (passo "preparar", antes do primeiro "publicar") cria um filtro de
          exclusão no sink _Default que descarta todos os logs de requisição deste serviço.
@@ -218,8 +235,8 @@
          "publicar"; o "verificar" confere (:361). Os números do limite (na main, 30 por
          aparelho e 100 no total por dia, config.ts:71-72) mudam por variável de ambiente
          e não entram neste texto. Conferir de novo se o servidor mudar.
-         Antes de publicar, conferir no Logs Explorer, depois de pedidos reais,
-         que não aparece nenhum log de requisição nem nenhum IP.
+         Conferido no Logs Explorer em 18/11/2026 (acima): nenhum log de requisição nem IP
+         de usuário.
          AI Studio, conferido em 09/11/2026 pelo Caique: a chave do Duncan está num
          projeto no Nível 1 pago, com o registro de chamadas (GenerateContent e
          Interactions) desligado. Falta confirmar só que o projeto não está no
@@ -231,7 +248,7 @@
          24/10/2026). Servidor no ar desde o go-live de 26/10/2026 e chave antiga do Gemini
          revogada em 30/10/2026, conferidos pelo Engenheiro em 16/11/2026. O registro de
          chamadas desligado e a faixa paga foram conferidos pelo Caique em 09/11/2026.
-         Publicar só depois de conferir os logs no Logs Explorer (acima) e de o Caique
+         Logs conferidos pelo Engenheiro em 18/11/2026. Publicar só depois de o Caique
          confirmar que o projeto não está no Contributor Tier. -->
   </li>
   <!-- /#311 -->
