@@ -211,9 +211,12 @@
          logs. Prazo: 30 dias é o padrão do bucket _Default num projeto
          (cloud.google.com/logging/quotas, "Logs retention periods", lida em 18/11/2026;
          configurável de 1 a 3650 dias). O repositório não muda esse prazo (deploy.sh só cria
-         a exclusão; servidor-ia/README.md:132 também cita 30 dias). A configuração real do
-         bucket não foi lida no console; se alguém mudar a retenção, este texto muda junto.
-         Os logs de auditoria (_Required, 400 dias) não têm dado de quem usa o app.
+         a exclusão; servidor-ia/README.md:132 também cita 30 dias). Confirmado pelo
+         Engenheiro em 18/11/2026: o bucket _Default do projeto do servidor está com
+         retentionDays 30 e sem bloqueio (locked: não). Se alguém mudar a retenção, este
+         texto muda junto. Os logs de auditoria dos deploys vão ao _Required (400 dias),
+         só com a conta e o IP do Caique, sem dado de quem usa o app; por isso ficam fora do
+         texto visível.
          Histórico da conferência: por padrão, o log de requisições do
          Cloud Run grava httpRequest.remoteIp e userAgent (bucket _Default, 30 dias). O
          deploy (passo "preparar", antes do primeiro "publicar") cria um filtro de
