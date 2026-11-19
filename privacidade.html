@@ -44,9 +44,11 @@
 <main>
 
 <h1>Política de Privacidade</h1>
-<p class="meta">Duncan · Tarefas e Hábitos · última atualização em 19 de novembro de 2026</p>
-<!-- Publicação: data no topo preenchida (19 de novembro de 2026), nas duas cópias
-     (habit-quest/docs e duncan). -->
+<p class="meta">Duncan · Tarefas e Hábitos · última atualização em [DATA DA PUBLICAÇÃO]</p>
+<!-- Publicação: a versão anterior foi ao ar em 19 de novembro de 2026 (duncan main
+     fce8703; habit-quest #244, merge 198a21e). Esta rodada (#467, ajuda do objetivo)
+     volta a data para [DATA DA PUBLICAÇÃO] até o ok do Caique; preencher nas duas
+     cópias (habit-quest/docs e duncan). -->
 
 <div class="destaque">
   <strong>Em resumo:</strong> o Duncan não tem conta e guarda o que você cria no seu aparelho.
@@ -159,9 +161,8 @@
        idPedido, modo, hoje, titulo, descricao, porque, prazo, medida, marcos,
        recusadas (ajudaDaMeta.ts:19; servidor-ia/src/meta.ts:35).
        temPlanoPremium() hoje devolve true para todo mundo; o texto visível não
-       fala de plano. A reescrita da meta no onboarding, uma vez por
-       instalação, não está no código e fica de fora. O allowBackup não muda
-       neste passo.
+       fala de plano. A ajuda no objetivo do mapa («Me ajuda, Duncan», #467)
+       tem item próprio logo abaixo (#467). O allowBackup não muda neste passo.
   -->
   <li>
     <strong>Ajuda com uma meta, se você pedir.</strong> Quando você pede ao Duncan uma
@@ -179,6 +180,49 @@
     para o servidor do Duncan, para a contagem, e não vai ao Gemini.
   </li>
   <!-- /#n80 -->
+  <!-- #467: «Me ajuda, Duncan» no passo do objetivo (05/08 parte 2). Conferido no head
+       18ef3a0 do #467 (base main 198a21e) em 19/11/2026. Mesma rota POST /v1/meta e
+       mesmo pedirMeta() (clienteIA.ts:328-373; header X-Duncan-Instalacao :353,
+       X-Firebase-AppCheck :355, só quando há token). Corpo montado em
+       marcosDoObjetivo.ts:381-396 (corpoDaAjudaNoOnboarding): idPedido, modo "versao"
+       (fixo), hoje (diaDeSaoPaulo), titulo (cortado em 80), medida {tipo:"marcos"}
+       (fixa, não é a medida da pessoa) e prazo só se houver data no calendário
+       (prazoEm; os chips 3/6/12 meses apagam prazoEm, app/onboarding.tsx:349).
+       Não vão descricao, porque, marcos nem recusadas; os marcos já escritos só filtram
+       a resposta no aparelho. No servidor (sem mudança no #467): allowlist meta.ts:35;
+       idPedido não vai ao Gemini (meta.ts:12, :178); modo vai como "modo: criar"
+       (meta.ts:155); contador com prefixo meta (servidor.ts:143, limites.ts:65), 1 dos
+       LIMITE_META_POR_DIA (4, config.ts:53), só conta se a resposta fica (servidor.ts:
+       270, :294, :302, :308); crise e falha devolvem a reserva; log só da lista
+       PERMITIDOS (log.ts:7). Uma vez por instalação: marca "duncan-ia:ajuda-do-objetivo"
+       no driver local, fora do prefixo dos documentos (marcaDaAjudaNoOnboarding.ts:15),
+       gravada só com resposta aproveitável (PassoDoObjetivo.tsx:271-272); não vai no
+       backup do Drive e "Apagar todos os dados" não a apaga. Sem checagem de plano:
+       vale no plano grátis (o nº 80 tem temPlanoPremium(), AjudaDaMeta.tsx:853; esta
+       porta não). A mesma tela aparece no onboarding (app/onboarding.tsx:854) e ao
+       trocar de mapa (app/mapa.tsx:124, PerguntaDaTroca.tsx:112), com a mesma marca.
+       Aviso da Cronista na nota de carregando, depois do toque (PassoDoObjetivo.tsx:708;
+       textosDoObjetivo.ts:42-44): «O objetivo e o prazo vão ao Google pelo servidor do
+       Duncan.» / sem prazo: «O objetivo vai ao Google pelo servidor do Duncan.» Nada
+       entra sem aceite (NotaDaVersao onAceitar, PassoDoObjetivo.tsx:411; marcos
+       sugeridos com aceitarSugestao/aceitarPendentes). Crise detectada no aparelho: a
+       chamada não sai (PassoDoObjetivo.tsx:254). Se o código mudar, este item muda. -->
+  <li>
+    <strong>Ajuda com o objetivo do mapa, se você pedir.</strong> Quando você escreve o seu
+    objetivo, no começo ou ao trocar de mapa, pode tocar em «Me ajuda, Duncan». É a mesma
+    ajuda da meta, para sugerir uma frase mais clara e alguns marcos, e vale para todo
+    mundo, também no plano grátis. Ela só vai à IA uma vez por instalação: depois que o
+    Duncan responde, o botão passa a mostrar só ideias prontas. Se você tocar, vão para o
+    Google, pelo servidor do Duncan: o texto do objetivo, o prazo (se você escolheu uma data
+    no calendário) e a data do aparelho. Vão também duas informações técnicas: que é um
+    pedido de versão nova e que o objetivo vai ser medido por marcos. Não vão o seu nome, as
+    respostas do mapa, os seus hábitos nem os marcos que você já escreveu. Enquanto o Duncan
+    lê, a tela lembra o que foi ao Google. O pedido conta no mesmo limite de pedidos por dia
+    da ajuda da meta, com o mesmo número desta instalação explicado no item do servidor do
+    Duncan, que não vai ao Gemini. A frase e os marcos sugeridos só entram se você aceitar.
+    Se a IA não responder, você segue com ideias e marcos prontos, sem a IA.
+  </li>
+  <!-- /#467 -->
   <!-- #311 -->
   <li>
     <strong>O servidor do Duncan.</strong> A conversa, a carta da semana, a ajuda da meta e o
@@ -473,7 +517,8 @@
     nome, o perfil do mapa, os avisos que você já leu, os consentimentos e a cópia
     temporária de um backup em arquivo, se ela tiver ficado no app. O arquivo que você já
     salvou ou enviou para outro lugar fica onde está. O app volta para a apresentação. Ficam só as suas
-    escolhas de lembrete e um aviso, sem dado pessoal, que segura o backup automático no
+    escolhas de lembrete, a marca de que a ajuda com o objetivo do mapa já foi usada nesta
+    instalação<!-- #467 -->, e um aviso, sem dado pessoal, que segura o backup automático no
     Drive. Ele só volta quando você restaurar o backup ou tocar em "salvar agora", para o
     app vazio não tomar o lugar do backup que está lá. Apagar todos os dados não pode ser desfeito.
   </li>
