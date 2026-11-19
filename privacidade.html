@@ -209,7 +209,7 @@
          duncan-ia-requests no sink _Default. O contador de uso fica no Firestore, fora dos
          logs. Prazo: 30 dias é o padrão do bucket _Default num projeto
          (cloud.google.com/logging/quotas, "Logs retention periods", lida em 18/11/2026;
-         configurável de 1 a 3650 dias). O repositório não muda esse prazo (deploy.sh só cria
+         configurável de 1 a 3650 dias). O repositório não muda esse prazo (servidor-ia/scripts/deploy.sh só cria
          a exclusão; servidor-ia/README.md:132 também cita 30 dias). Confirmado pelo
          Engenheiro em 18/11/2026: o bucket _Default do projeto do servidor está com
          retentionDays 30 e sem bloqueio (locked: não). Se alguém mudar a retenção, este
@@ -223,19 +223,19 @@
          Os logs da aplicação registram uma linha por pedido (uso, status, ms, modelo,
          tentativas) e os erros, sem IP, user agent, id de instalação nem corpo
          (#311 mergeado na main, merge be041b0, conferido na main b2a5d52 em 24/10/2026:
-         servidor-ia/src/log.ts:7, lista PERMITIDOS; servidor-ia/src/servidor.ts:118-128,
+         servidor-ia/src/log.ts:7, lista PERMITIDOS; servidor-ia/src/servidor.ts:161,
          uma linha por pedido). O IP não é gravado: LimitePorIp
-         (servidor-ia/src/limites.ts:253-274) guarda só o hash com sal num Map em memória,
+         (servidor-ia/src/limites.ts:334-355) guarda só o hash com sal num Map em memória,
          até passar de 20 000 entradas ou a instância reiniciar; janela de 10 minutos
-         (config.ts:74, janelaIpMs). Contador: Firestore, documento <dia>_<sha256("dia:id")>
-         (limites.ts:51-52), campo "expira" dois dias depois do início do dia
-         (limites.ts:249-251); o TTL (scripts/deploy.sh:259) pode levar mais cerca de 24 h,
+         (config.ts:129, janelaIpMs). Contador: Firestore, documento <dia>_<sha256("dia:id")>
+         (limites.ts:65-69), campo "expira" dois dias depois do início do dia
+         (limites.ts:330-332); o TTL (servidor-ia/scripts/deploy.sh:279) pode levar mais cerca de 24 h,
          em até três dias. Há também um total do app por dia, <dia>_total, com o mesmo TTL
          e sem id. Sem o Firestore, a contagem fica na memória da instância. Áudio: rota
-         /v1/transcricao (servidor-ia/src/usos.ts:17; src/lib/motorGemini.ts:1339-1343).
-         Exclusão dos request logs: deploy.sh:29, chamada no "preparar" (:253), antes do
-         "publicar"; o "verificar" confere (:361). Os números do limite (na main, 30 por
-         aparelho e 100 no total por dia, config.ts:71-72) mudam por variável de ambiente
+         /v1/transcricao (servidor-ia/src/usos.ts:17; src/lib/motorGemini.ts:1377-1401).
+         Exclusão dos request logs: servidor-ia/scripts/deploy.sh:22 e :30, chamada no "preparar" (:273), antes do
+         "publicar"; o "verificar" confere (:410, :431). Os números do limite (na main, 30 por
+         aparelho e 100 no total por dia, config.ts:125 e :127) mudam por variável de ambiente
          e não entram neste texto. Conferir de novo se o servidor mudar.
          Conferido no Logs Explorer em 18/11/2026 (acima): nenhum log de requisição nem IP
          de usuário.
@@ -279,7 +279,7 @@
          pedido sem comprovante válido pode ser recusado" vale nas duas fases e não muda.
          Conferido na main 87a53ef em 16/11/2026: src/lib/appCheck.ts (provedor
          playIntegrity quando __DEV__ é falso, :37; isTokenAutoRefreshEnabled: true, :50;
-         espera do token de até 2 s, :17); src/lib/clienteIA.ts:270 e :293 (header
+         espera do token de até 2 s, :17); src/lib/clienteIA.ts:294 e :355 (header
          X-Firebase-AppCheck, só quando há token); servidor-ia/src/appcheck.ts (verifyToken
          sem consume, pelas chaves públicas firebaseappcheck.googleapis.com/v1/jwks; nada do
          aparelho vai ao Google pelo servidor); servidor-ia/src/log.ts (campo appCheck:
@@ -300,7 +300,7 @@
   <!-- /#406 -->
   <!-- #311 -->
   <li>
-    <strong>O que o Google faz com a conversa, a carta e o áudio.</strong> O Duncan usa o Gemini na
+    <strong>O que o Google faz com a conversa, a carta, a ajuda da meta e o áudio.</strong> O Duncan usa o Gemini na
     modalidade paga, em que o Google atua como prestador de serviço: processa o conteúdo
     só para gerar a resposta, sob os
     <a href="https://ai.google.dev/gemini-api/terms">Termos Adicionais do Gemini API</a> e o
@@ -318,7 +318,7 @@
          "Prompts", "Contextual Information" e "Output"; os Termos Adicionais contam
          como prompt também os arquivos enviados ("files such as images, videos, or
          documents"), e o áudio do ditado vai como inlineData no pedido
-         (motorGemini.ts:1339-1352). Revisão humana: "authorized Google employees may
+         (motorGemini.ts:1377-1401). Revisão humana: "authorized Google employees may
          assess the flagged content" (usage-policies). Se a chave do app cair na cota
          gratuita, este parágrafo deixa de valer. -->
   </li>
@@ -376,7 +376,7 @@
      na main 0d2a503 em 09/11/2026: agendaDoCelular.ts, SecaoAgenda.tsx e agendaStore.ts
      sem mudança desde cdfe820; "Apagar todos os dados" chama
      useAgendaStore.getState().desconectar() antes de limpar as tarefas
-     (src/lib/apagarTudo.ts:41), e os eventos ficam na agenda. -->
+     (src/lib/apagarTudo.ts:42), e os eventos ficam na agenda. -->
 <h2>Agenda do celular, se você ligar</h2>
 <p>
   Em Configurações, a chave "Tarefas no Google Agenda" fica desligada até você ligar.
@@ -481,7 +481,7 @@
        da política vale para o AAB do teste fechado, feito da main 87a53ef, que contém o
        9f1c8a8 (#353, nº 66) e o 75828fc (#398, nº 71): parar e cancelar apagam o arquivo, as
        sobras somem ao abrir a conversa e "Apagar todos os dados" apaga cache/Audio e
-       cache/ExpoAudio (src/lib/audioDoDitado.ts, apagarTudo.ts:85). Se o build que for ao
+       cache/ExpoAudio (src/lib/audioDoDitado.ts, apagarTudo.ts:87). Se o build que for ao
        teste fechado não contiver o 9f1c8a8, o item volta antes de publicar, em "Como
        apagar", depois do primeiro item: "Os áudios do microfone ficam num arquivo
        temporário do app até o Android limpar o cache. Esse botão ainda não os apaga;
@@ -496,15 +496,17 @@
     Os backups que já estão no Drive não saem com esse botão. Para apagá-los, use "Apagar
     backup do Drive", em Configurações (veja o item abaixo). As denúncias que já foram enviadas saem se você pedir pelo e-mail
     <a href="mailto:conta.duncan@gmail.com">conta.duncan@gmail.com</a>.
-    <!-- Conferido na main c921469 (#314 em a90c429, #311 já mergeado): src/lib/apagarTudo.ts
-         29-67 (signOut em :64 via driveBackup.ts:59-62, sem revokeAccess; nuvemStore
-         desconectar em :63; cache em :66 via backup.ts:104-112, só duncan-backup-*.json;
-         id novo em :43; semParar em :69-74). Ficam no nuvemStore só automaticoPausado e
+    <!-- Conferido na main c921469 (#314 em a90c429, #311 já mergeado). Reconferido na
+         origin/main 3ead4d7 (18/11/2026): src/lib/apagarTudo.ts:33-88 (signOut em :82
+         via driveBackup.ts:62 e :67, sem revokeAccess; nuvemStore desconectar em :81,
+         implementação em nuvemStore.ts:154-160; cache em :84 via backup.ts:109-116,
+         só duncan-backup-*.json; id novo em :61, clienteIA.ts:140; semParar em :91-95,
+         usado em :81, :82, :84 e :87). Ficam no nuvemStore só automaticoPausado e
          protegerDrive (booleanos); conta, ultimoBackup e contaLiberada vão a null
-         (nuvemStore.ts:85-89). Se esse código mudar, rever este trecho.
-         Reconferido na main 0d2a503 (09/11/2026): as linhas mudaram (apagarTodosOsDados em
-         apagarTudo.ts:32; não faz nada se o banco não abriu, :38; agenda desligada em :41;
-         id novo em :59; Google e cache em :79-82; áudios do ditado em :85, nº 66). -->
+         (nuvemStore.ts:154-167). Se esse código mudar, rever este trecho.
+         apagarTodosOsDados em apagarTudo.ts:33; não faz nada se o banco não abriu, :39;
+         agenda desligada em :42; id novo em :61; Google em :81-82 e cache em :84;
+         áudios do ditado em :87, nº 66). -->
   </li>
   <li>
     Em <strong>Configurações</strong>, na parte do Google Drive, o botão "apagar backup"
