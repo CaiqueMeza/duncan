@@ -1,9 +1,9 @@
-# Ordem do Dia — página pública
+# Duncan — página pública
 
-Hospeda a **política de privacidade** do aplicativo Ordem do Dia, exigida pelo
+Hospeda a **política de privacidade** do aplicativo Duncan, exigida pelo
 Google Play e pela App Store.
 
-- https://caiquemeza.github.io/ordem-do-dia/privacidade.html
+- https://caiquemeza.github.io/duncan/privacidade.html
 
 Este repositório é público apenas porque o GitHub Pages exige repositório
 público no plano gratuito. O código do aplicativo é privado e vive em outro

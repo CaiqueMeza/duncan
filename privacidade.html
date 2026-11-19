@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Política de Privacidade — Ordem do Dia</title>
+<title>Política de Privacidade · Duncan · Tarefas e Hábitos</title>
 <style>
   :root {
     --bg: #FBFAF7; --surface: #FFFFFF; --border: #E1E3EE;
@@ -44,104 +44,531 @@
 <main>
 
 <h1>Política de Privacidade</h1>
-<p class="meta">Ordem do Dia · última atualização em 2 de setembro de 2026</p>
+<p class="meta">Duncan · Tarefas e Hábitos · última atualização em 19 de novembro de 2026</p>
+<!-- Publicação: data no topo preenchida (19 de novembro de 2026), nas duas cópias
+     (habit-quest/docs e duncan). -->
 
 <div class="destaque">
-  <strong>Em uma frase:</strong> o Ordem do Dia não tem conta, não tem servidor e não
-  coleta seus dados. Tudo o que você registra fica guardado no seu próprio aparelho.
+  <strong>Em resumo:</strong> o Duncan não tem conta e guarda o que você cria no seu aparelho.
+  O que você escreve só sai dele quando você conversa com o Duncan, quando permite que ele
+  escreva a carta da semana com a IA, quando pede a ajuda dele numa meta, quando liga o
+  backup no seu Google Drive ou quando denuncia algo que a IA escreveu. Uma tarefa com data
+  também pode ir para uma agenda do celular, se você ligar essa opção.
 </div>
+<!-- allowBackup (A1): DECIDIDO em 16/11/2026. O PO desligou o backup do Android, e o
+     Engenheiro abriu o habit-quest #447 (rascunho, head 35d097f, base 87a53ef), que põe
+     "allowBackup": false em expo.android no app.json; o plugin AllowBackup do Expo grava
+     android:allowBackup="false". As frases visíveis desta política (resumo, "Desinstalar",
+     "Apagar todos os dados") só são verdadeiras com o #447 na main ANTES do build do AAB e
+     com o AAB feito de um commit que o contenha (passo 6 do caminho no play-console.md).
+     Com o #447, nenhuma frase visível muda. Transferência direta entre aparelhos (D2D):
+     em alguns fabricantes o allowBackup false não a desliga (página do Auto Backup);
+     é cópia direta para um aparelho novo da própria pessoa, sem nuvem, e nenhuma frase
+     visível fica falsa; fechar também esse caminho é decisão do Engenheiro.
+     O resto deste comentário é SÓ FALLBACK, inativo: vale apenas se o #447 não entrar
+     antes do build. Na main 87a53ef o app.json não define
+     android.allowBackup e o Expo grava true (AllowBackup.js:26), sem fullBackupContent nem
+     dataExtractionRules: o backup automático do Android copia files/ (o SQLite) e as
+     preferências para a conta Google da pessoa e os devolve quando o app é instalado de
+     novo (developer.android.com/identity/data/autobackup, "Restore schedule"). As frases
+     visíveis abaixo ficam como estão.
+     FALLBACK, SÓ SE O BACKUP FICAR LIGADO (sem o #447 no commit do AAB), trocar nas duas
+     cópias, com data nova:
+     (1) Resumo: "O que você escreve só sai dele quando" passa a "O que você escreve só
+         sai dele, pelo Duncan, quando"; e, no fim do resumo, acrescentar: "Se o backup do
+         Android estiver ligado no seu celular, o próprio Android também guarda uma cópia
+         na sua conta Google e a devolve quando o app é instalado de novo."
+     (2) Desinstalar: depois da frase do backup no Google Drive ("... como explicado
+         acima."), acrescentar: "Se o backup do
+         Android estiver ligado no seu celular, a cópia que ele guardou na sua conta Google
+         pode voltar quando você instalar o Duncan de novo, neste ou em outro aparelho.
+         Para ela não voltar, desligue o backup do Android antes de reinstalar."
+     (3) Apagar todos os dados: no fim do primeiro item de "Como apagar", acrescentar:
+         "Esse botão não apaga a cópia que o backup do Android talvez já tenha guardado na
+         sua conta Google. Ela é trocada pelo app vazio no próximo backup do Android; até
+         lá, se você reinstalar o app, os dados antigos podem voltar."
+     (4) Rodapé "Seus dados ficam no seu aparelho, salvo o que está descrito acima": fica
+         como está, porque a frase nova do resumo vem acima.
+     Antes de ativar: conferir num aparelho se o número desta instalação (clienteIA.ts,
+     driver de armazenamento) volta com o backup; se voltar, o comentário de clienteIA.ts
+     ("outro aparelho restaurado não herda a cota") deixa de valer, mas nenhuma frase
+     visível depende disso.
+     COM O #447 (backup desligado, a decisão): nenhuma frase visível muda; o fallback acima
+     fica inativo. -->
+
+<h2>Quem é o responsável</h2>
+<p>
+  O Duncan é feito por Caique França Meza, que decide como os dados descritos aqui são
+  tratados. O contato está no fim desta página.
+  <!-- PENDENTE (advogado): se é preciso indicar um encarregado de dados (LGPD, art. 41).
+       Controlador definido pelo dono em 21/10/2026: Caique França Meza. -->
+</p>
 
 <h2>O que o aplicativo guarda</h2>
 <p>
-  O Ordem do Dia organiza tarefas, hábitos e metas. Tudo o que você cria — títulos,
-  descrições, prazos, categorias, sequências, XP, conquistas e as notas da Roda da
-  Vida — é gravado em um banco de dados local, no armazenamento privado do próprio
-  aplicativo, no seu aparelho.
+  O Duncan organiza tarefas, hábitos e metas. Tudo o que você cria (títulos, descrições,
+  prazos, áreas, sequências, XP, conquistas, avaliações da Roda da Vida, humor e energia,
+  o que você registra no "Tive vontade", o que você escreve sobre o dia, blocos de foco,
+  listas, as respostas do mapa, a conversa com o Duncan e o nome que você informar) é
+  gravado num banco de dados local, no armazenamento privado do aplicativo, no seu
+  aparelho.
 </p>
 <p>
-  Não existe cadastro, login, perfil online nem sincronização com nenhum servidor.
-  Nós não temos acesso a esses dados, e não há para onde enviá-los.
+  Não existe cadastro nem conta do Duncan.<!-- #311 --> Há um servidor só para levar a conversa, a
+  carta, a ajuda da meta e o áudio até a IA. Ele não guarda o que você escreve. As denúncias que você fizer
+  não passam por esse servidor: ficam conosco por até 12 meses (veja abaixo).<!-- /#311 -->
+  A sua conta Google só entra no Duncan se você ligar o backup no Drive. A agenda, se você
+  ligar, usa uma agenda que já está no celular, sem um login novo.
 </p>
 
 <h2>O que sai do aparelho</h2>
-<p>Apenas duas coisas, e nenhuma delas contém o conteúdo que você registra:</p>
 <ul>
+  <li>
+    <strong>Conversa com o Duncan.</strong> Antes da primeira conversa com a IA, o app
+    avisa o que vai para o Google e só segue depois do seu "Entendi". Quando você escreve
+    ou fala com o Duncan, a mensagem vai para o Gemini, a IA do Google,<!-- #311 --> passando pelo
+    servidor do Duncan,<!-- /#311 --> junto com o que
+    vocês já conversaram e um resumo do que está no app, para ele responder com base nisso:
+    seu nome, as tarefas pendentes, os hábitos, as metas (com o porquê de cada uma), o que
+    você concluiu na semana e o que você contou no mapa, como a sua linha de chegada. Se
+    você falar pelo microfone, o áudio também vai, para virar texto.
+  </li>
+  <li>
+    <strong>Carta da semana, se você permitir.</strong> Toda segunda chega uma carta sobre
+    a semana que passou (na primeira vez que você abre o app a partir de segunda). Antes da
+    primeira, o Duncan pergunta se você quer que ele a escreva com a IA. Se sim, ele envia
+    ao Gemini o seu nome, as tarefas, hábitos, metas e foco da semana, o humor, a energia e
+    trechos do que você escreveu sobre cada dia (até 500 caracteres por dia). Sem a IA, a
+    carta chega do mesmo jeito, com os números da semana e um conselho pronto, e nada é
+    enviado. Dá para mudar quando quiser, em Configurações.
+  </li>
+  <!-- #n80 (ativo): a ajuda da meta (nº 80) entrou na main pelo #448 (rota
+       POST /v1/meta, merge 790be21) e pelo #450 (app, merge dd6848b). Conferido
+       na main 580d0cd em 18/11/2026. Vai no AAB do teste fechado. As portas são
+       «Sugerir uma versão» (GoalFormSheet.tsx / AjudaDaMeta.tsx) e «Revisar a
+       meta» (app/goal/[id].tsx), que chamam pedirMeta() e POST /v1/meta. A frase
+       do meio é igual, palavra por palavra, ao aviso do app escrito pela
+       Cronista (16/11/2026; AjudaDaMeta.tsx:274-278). Se o aviso mudar, esta
+       frase muda junto. As últimas frases do item (data do aparelho, campo
+       "hoje"; o marcador "tipo: habito"; o campo "modo", versao ou revisar; os
+       apelidos m1/t3 no lugar dos ids reais, que não vão; e o id de instalação
+       só no cabeçalho X-Duncan-Instalacao, para o contador com prefixo meta,
+       nunca ao Gemini; decisão do PO de 16/11) são informação a mais da
+       política, sem contrariar o aviso. O idPedido vai no corpo só para o
+       servidor (deduplicação) e não vai ao Gemini. Allowlist do corpo:
+       idPedido, modo, hoje, titulo, descricao, porque, prazo, medida, marcos,
+       recusadas (ajudaDaMeta.ts:19; servidor-ia/src/meta.ts:35).
+       temPlanoPremium() hoje devolve true para todo mundo; o texto visível não
+       fala de plano. A reescrita da meta no onboarding, uma vez por
+       instalação, não está no código e fica de fora. O allowBackup não muda
+       neste passo.
+  -->
+  <li>
+    <strong>Ajuda com uma meta, se você pedir.</strong> Quando você pede ao Duncan uma
+    versão melhor de uma meta ou uma revisão dela, o app avisa antes o que vai. Desta meta,
+    vão para o Google, pelo servidor do Duncan: o título, a descrição, o porquê, o prazo e a
+    medida; os nomes dos marcos e das tarefas, e se cada um já foi feito; e o que você
+    recusou da última vez. Não vão o seu nome, os seus hábitos nem as suas outras metas e
+    tarefas. O servidor do Duncan só leva e traz, e não guarda nada do que você escreve.
+    Junto vão a data do aparelho, para o Duncan entender o prazo, e, quando um marco se
+    cumpre por um hábito, só a indicação de que ele é de hábito, sem o nome nem as vezes
+    desse hábito. Vão também duas informações técnicas: se você pediu uma versão nova ou
+    uma revisão, e apelidos curtos no lugar dos códigos internos dos marcos e das tarefas
+    (os códigos de verdade não saem do aparelho). Para o limite de pedidos por dia, vale o
+    mesmo número desta instalação explicado no item do servidor do Duncan: ele vai só
+    para o servidor do Duncan, para a contagem, e não vai ao Gemini.
+  </li>
+  <!-- /#n80 -->
+  <!-- #311 -->
+  <li>
+    <strong>O servidor do Duncan.</strong> A conversa, a carta da semana, a ajuda da meta e o
+    áudio do microfone (que vai para virar texto) não vão direto do celular para o Gemini: passam
+    antes por um servidor do Duncan no Google Cloud, em São Paulo, que os repassa ao Gemini
+    e devolve a resposta. Esse servidor não guarda a conversa, a carta, o áudio nem nada do
+    que você escreveu, e não grava o conteúdo dos pedidos. As denúncias não passam por ele.
+    Para evitar abuso, há um limite de pedidos por dia em cada aparelho: o app cria um número
+    aleatório desta instalação (não é o identificador de publicidade e não tem ligação com
+    conta nenhuma) e o envia junto. O servidor guarda só uma contagem de pedidos do dia,
+    ligada a uma versão embaralhada (hash) desse número com a data, no Google Firestore, no
+    mesmo projeto do Google Cloud. Se o Firestore falhar, a mesma contagem fica só na
+    memória do servidor, até ele reiniciar. Essa contagem some em até três dias. O seu
+    endereço IP é usado na hora, contra abuso, só na memória do servidor e de forma
+    embaralhada, e não é gravado. O registro do
+    servidor tem só dados técnicos de cada pedido, como o tipo, o resultado, o tempo de
+    resposta e o tipo de erro, quando há. Ele não tem o que você escreveu, o seu IP nem o
+    número desta instalação, e fica guardado por 30 dias, o prazo padrão do Google Cloud.
+    O registro automático de cada acesso ao servidor, que guardaria o IP e a identificação
+    do app, fica desligado.
+    <!-- Logs CONFERIDOS no Logs Explorer em 18/11/2026 pelo Engenheiro (informado pelo PO):
+         30 dias, de 23/10 a 18/11/2026, 173 entradas do duncan-ia. Nenhuma tem texto da
+         pessoa, IP de usuário nem id do aparelho. Os logs da aplicação têm só metadados
+         técnicos (evento, status, duração, modelo, contagem de uso, tentativas, tipo de
+         erro). Os logs de sistema do Cloud Run não têm dado de usuário. Os logs de
+         auditoria só mostram a conta e o IP do próprio Caique nos deploys. Os logs de
+         requisição (que guardariam IP e user agent) estão desligados pela exclusão
+         duncan-ia-requests no sink _Default. O contador de uso fica no Firestore, fora dos
+         logs. Prazo: 30 dias é o padrão do bucket _Default num projeto
+         (cloud.google.com/logging/quotas, "Logs retention periods", lida em 18/11/2026;
+         configurável de 1 a 3650 dias). O repositório não muda esse prazo (servidor-ia/scripts/deploy.sh só cria
+         a exclusão; servidor-ia/README.md:132 também cita 30 dias). Confirmado pelo
+         Engenheiro em 18/11/2026: o bucket _Default do projeto do servidor está com
+         retentionDays 30 e sem bloqueio (locked: não). Se alguém mudar a retenção, este
+         texto muda junto. Os logs de auditoria dos deploys vão ao _Required (400 dias),
+         só com a conta e o IP do Caique, sem dado de quem usa o app; por isso ficam fora do
+         texto visível.
+         Histórico da conferência: por padrão, o log de requisições do
+         Cloud Run grava httpRequest.remoteIp e userAgent (bucket _Default, 30 dias). O
+         deploy (passo "preparar", antes do primeiro "publicar") cria um filtro de
+         exclusão no sink _Default que descarta todos os logs de requisição deste serviço.
+         Os logs da aplicação registram uma linha por pedido (uso, status, ms, modelo,
+         tentativas) e os erros, sem IP, user agent, id de instalação nem corpo
+         (#311 mergeado na main, merge be041b0, conferido na main b2a5d52 em 24/10/2026:
+         servidor-ia/src/log.ts:7, lista PERMITIDOS; servidor-ia/src/servidor.ts:161,
+         uma linha por pedido). O IP não é gravado: LimitePorIp
+         (servidor-ia/src/limites.ts:334-355) guarda só o hash com sal num Map em memória,
+         até passar de 20 000 entradas ou a instância reiniciar; janela de 10 minutos
+         (config.ts:129, janelaIpMs). Contador: Firestore, documento <dia>_<sha256("dia:id")>
+         (limites.ts:65-69), campo "expira" dois dias depois do início do dia
+         (limites.ts:330-332); o TTL (servidor-ia/scripts/deploy.sh:279) pode levar mais cerca de 24 h,
+         em até três dias. Há também um total do app por dia, <dia>_total, com o mesmo TTL
+         e sem id. Sem o Firestore, a contagem fica na memória da instância. Áudio: rota
+         /v1/transcricao (servidor-ia/src/usos.ts:17; src/lib/motorGemini.ts:1377-1401).
+         Exclusão dos request logs: servidor-ia/scripts/deploy.sh:22 e :30, chamada no "preparar" (:273), antes do
+         "publicar"; o "verificar" confere (:410, :431). Os números do limite (na main, 30 por
+         aparelho e 100 no total por dia, config.ts:125 e :127) mudam por variável de ambiente
+         e não entram neste texto. Conferir de novo se o servidor mudar.
+         Conferido no Logs Explorer em 18/11/2026 (acima): nenhum log de requisição nem IP
+         de usuário.
+         AI Studio, conferido em 09/11/2026 pelo Caique: a chave do Duncan está num
+         projeto no Nível 1 pago, com o registro de chamadas (GenerateContent e
+         Interactions) desligado. Contributor Tier, CONFERIDO em 18/11/2026 pelo
+         Caique (prints do AI Studio, informado pelo PO): o projeto é o Default
+         Gemini Project, com a chave «API Duncan», no Nível 1 pago, fora da
+         contribuição de dados; os Gemini API Logs and Datasets estão como Disabled.
+         Se o registro ligar ou o projeto entrar no Contributor Tier, a
+         política e a Segurança dos Dados mudam (com o registro ligado, o projeto guarda
+         pedidos e respostas por até 55 dias; no Contributor Tier, o Google usa os dados
+         como na faixa gratuita: ai.google.dev/gemini-api/docs/logs-policy, conferido em
+         24/10/2026). Servidor no ar desde o go-live de 26/10/2026 e chave antiga do Gemini
+         revogada em 30/10/2026, conferidos pelo Engenheiro em 16/11/2026. O registro de
+         chamadas desligado e a faixa paga foram conferidos pelo Caique em 09/11/2026.
+         Contributor Tier conferido pelo Caique em 18/11/2026. Logs conferidos pelo
+         Engenheiro em 18/11/2026. -->
+  </li>
+  <!-- /#311 -->
+  <!-- #406 -->
+  <li>
+    <strong>Verificação de que o pedido vem do Duncan.</strong> Para o servidor do Duncan
+    atender só o aplicativo original, e não quem tente usá-lo por fora, o app usa o Firebase
+    App Check com a Play Integrity, dois serviços do Google. Na primeira vez que o app fala
+    com a IA, e depois de tempos em tempos enquanto ele está aberto, o Google Play confere
+    se este é o Duncan original, sem alteração, num aparelho Android que passa nas checagens
+    do Google. Para isso, o Google recebe dados técnicos do app (o nome do pacote, a versão e
+    o certificado de assinatura), um atestado do aparelho gerado pelo Google Play services e
+    a situação da licença do app nas contas Google do celular. Em troca, o app recebe um
+    comprovante temporário, que vai junto com cada pedido à IA. O servidor do Duncan só
+    confere se o comprovante é válido e anota se foi válido, inválido ou ausente; o
+    comprovante não é guardado. Nada do que você escreve ou fala vai para essa verificação.
+    Um pedido sem comprovante válido pode ser recusado. A Play Integrity faz parte da Google
+    Play e segue os <a href="https://play.google.com/about/play-terms/">Termos de Serviço da Google Play</a> e a
+    <a href="https://policies.google.com/privacy">Política de Privacidade do Google</a>.
+    <!-- #406 mergeado na main em 09/11/2026 (merge 43c6421, head e0cef84); vai no AAB do
+         teste fechado, feito da main (87a53ef ou posterior). Fase 1: o servidor só registra
+         (APP_CHECK_EXIGIR ausente ou false); antes do pedido de produção, a exigência liga
+         (APP_CHECK_EXIGIR=true) e o pedido sem comprovante válido recebe 401. A frase "Um
+         pedido sem comprovante válido pode ser recusado" vale nas duas fases e não muda.
+         Conferido na main 87a53ef em 16/11/2026: src/lib/appCheck.ts (provedor
+         playIntegrity quando __DEV__ é falso, :37; isTokenAutoRefreshEnabled: true, :50;
+         espera do token de até 2 s, :17); src/lib/clienteIA.ts:294 e :355 (header
+         X-Firebase-AppCheck, só quando há token); servidor-ia/src/appcheck.ts (verifyToken
+         sem consume, pelas chaves públicas firebaseappcheck.googleapis.com/v1/jwks; nada do
+         aparelho vai ao Google pelo servidor); servidor-ia/src/log.ts (campo appCheck:
+         valido, invalido ou ausente; o token não vai para o log). O que a Play Integrity
+         recebe: developer.android.com/google/play/integrity/terms, "Data safety",
+         conferido em 09/11/2026. O SDK do App Check manda também o "Firebase user agent"
+         (modelo e versão do sistema, sem identificador):
+         firebase.google.com/docs/android/play-data-disclosure, 09/11/2026.
+         FCM e FID: o plugin plugins/sem-inicio-automatico-do-firebase.js (app.json, na main)
+         grava firebase_messaging_auto_init_enabled=false no manifesto, e o app nunca pede
+         token de push (os lembretes são locais). Relato do Engenheiro no head e5afd54 do
+         #406. PENDENTE (Engenheiro): confirmar no logcat do Razr, com o AAB ou APK real,
+         que não sai token do FCM nem FID. Se sair, esta política e a Segurança dos Dados
+         mudam (e a frase de Notificações deixa de valer).
+         PENDENTE (advogado): o papel do Google (operador no Firebase; a Play Integrity
+         roda sob os termos da própria Google Play). -->
+  </li>
+  <!-- /#406 -->
+  <!-- #311 -->
+  <li>
+    <strong>O que o Google faz com a conversa, a carta, a ajuda da meta e o áudio.</strong> O Duncan usa o Gemini na
+    modalidade paga, em que o Google atua como prestador de serviço: processa o conteúdo
+    só para gerar a resposta, sob os
+    <a href="https://ai.google.dev/gemini-api/terms">Termos Adicionais do Gemini API</a> e o
+    adendo de proteção de dados do Google como operador. Nessa modalidade, o Google não usa
+    o que você envia nem as respostas para melhorar os produtos dele. Ele guarda as
+    mensagens, o áudio do microfone, o que vai da meta e as respostas por 55 dias, só para
+    detectar e impedir abuso e cumprir obrigações legais; nesse caso, funcionários autorizados do Google podem
+    examinar o que for sinalizado pelos filtros de segurança. Não escreva nem fale ao
+    Duncan o que você não quer que chegue ao Google.
+    <!-- Decisão A (21/10/2026): Gemini pago + servidor intermediário no Cloud Run
+         (southamerica-east1), mesmo projeto da chave paga. Base: Gemini API Additional
+         Terms (vigentes desde 23/03/2026, "Paid Services") e
+         ai.google.dev/gemini-api/docs/usage-policies ("fifty-five (55) days"),
+         conferidos em 21/10/2026 e de novo em 24/10/2026. Os 55 dias valem para
+         "Prompts", "Contextual Information" e "Output"; os Termos Adicionais contam
+         como prompt também os arquivos enviados ("files such as images, videos, or
+         documents"), e o áudio do ditado vai como inlineData no pedido
+         (motorGemini.ts:1377-1401). Revisão humana: "authorized Google employees may
+         assess the flagged content" (usage-policies). Se a chave do app cair na cota
+         gratuita, este parágrafo deixa de valer. -->
+  </li>
+  <!-- /#311 -->
+  <li>
+    <strong>Backup no Google Drive, se você ligar.</strong> Em Configurações, você pode
+    conectar a sua conta Google. O app pede só o acesso à pasta própria dele no seu Drive,
+    que fica oculta e não enxerga os seus outros arquivos. Uma cópia de todos os seus dados
+    (inclusive a conversa, o humor, o diário e o "Tive vontade") vai para essa pasta ao
+    conectar, quando você toca em salvar e, depois, sozinha, no máximo a cada seis horas. O
+    arquivo fica na sua conta, sob a política do Google. O app guarda no aparelho o e-mail
+    da conta conectada, só para mostrar qual está ligada.
+  </li>
+  <li>
+    <strong>Denúncia de uma resposta ou de uma carta, se você fizer.</strong> Se uma
+    resposta do Duncan ou a carta da semana escrita com a IA for ofensiva, perigosa ou
+    falsa, você pode denunciá-la de dentro do app, sem sair dele. Vão o texto denunciado, o
+    motivo e o seu comentário, além da versão do app. Se o texto citar o seu nome ou as suas
+    tarefas, isso vai junto; o resto da conversa fica no aparelho. O app não envia o seu
+    nome nem o seu e-mail na denúncia. Ela chega a nós por um Formulário Google (um serviço do Google),
+    e usamos as denúncias para corrigir o Duncan. Sem internet, a denúncia fica guardada
+    neste aparelho, e o app tenta enviá-la de novo quando estiver aberto com internet.
+    "Apagar todos os dados" também apaga as que ainda não saíram. Guardamos as denúncias por
+    até 12 meses e as apagamos antes, se você pedir.
+    <!-- Prazo de guarda das denúncias definido pelo dono em 21/10/2026: 12 meses.
+         Na main (f186640): post em denuncia.ts (TEMPO_LIMITE_MS = 12 s) e reenvio em
+         filaDeDenuncias.ts, ao abrir, ao voltar ao primeiro plano e, com o app aberto,
+         cerca de uma vez por minuto. Não há mailto. O #249, o #259, o #260 e o #263
+         estão mergeados. -->
+  </li>
   <li>
     <strong>Verificação de atualização.</strong> Ao abrir, o aplicativo consulta o
     serviço de atualizações da Expo (<code>u.expo.dev</code>) para saber se existe
-    uma versão nova. Essa consulta envia informações técnicas — sistema operacional,
+    uma versão nova. Essa consulta envia informações técnicas: sistema operacional,
     versão do aplicativo e um identificador de instalação gerado pela Expo. Não envia
     suas tarefas, hábitos, metas ou notas.
   </li>
   <li>
-    <strong>Compartilhamento, e só quando você pede.</strong> Ao tocar em compartilhar
-    uma conquista, o aplicativo gera uma imagem e entrega ao aplicativo que você
-    escolher (mensageiro, rede social, e-mail). O destino é escolha sua, e o que
-    acontece depois passa a ser regido pela política daquele aplicativo.
+    <strong>Compartilhamento, e só quando você pede.</strong> Ao compartilhar uma conquista
+    ou salvar um backup em arquivo, o aplicativo entrega o conteúdo ao aplicativo que você
+    escolher (mensageiro, rede social, e-mail, armazenamento). O destino é escolha sua, e o
+    que acontece depois passa a ser regido pela política daquele aplicativo.
   </li>
 </ul>
+<p>
+  <!-- #311 -->O servidor do Duncan fica no Brasil. <!-- /#311 -->Os servidores do Gemini, do Google e da Expo
+  podem ficar fora do país (os termos do Gemini permitem guardar o conteúdo por pouco
+  tempo em qualquer país onde o Google tenha instalações), então esses envios podem ser
+  uma transferência internacional de dados.
+  <!-- PENDENTE (advogado): base legal de cada tratamento e redação da transferência
+       internacional (LGPD, arts. 7º, 11 e 33). -->
+</p>
+
+<!-- #145: na main desde 810b42a (01/11/2026) e no APK preview e74a5c6e. Reconferido
+     na main 0d2a503 em 09/11/2026: agendaDoCelular.ts, SecaoAgenda.tsx e agendaStore.ts
+     sem mudança desde cdfe820; "Apagar todos os dados" chama
+     useAgendaStore.getState().desconectar() antes de limpar as tarefas
+     (src/lib/apagarTudo.ts:42), e os eventos ficam na agenda. -->
+<h2>Agenda do celular, se você ligar</h2>
+<p>
+  Em Configurações, a chave "Tarefas no Google Agenda" fica desligada até você ligar.
+  Antes de o celular pedir a permissão, o Duncan avisa que vai ler e gravar na agenda.
+  Ele usa isso só na agenda que você escolher: grava os eventos das tarefas com data e
+  lê essa agenda para não criar o mesmo evento duas vezes. Das outras agendas, mostra só
+  o nome e a conta de cada uma, para você escolher. Se a agenda escolhida for de uma conta Google, o Android
+  pode sincronizar os eventos com o Google Agenda. O Duncan não fala com a API do Google
+  Agenda, não pede login para isso e não usa escopo de acesso do Google além do backup
+  no Drive, descrito acima. Nada disso sai do aparelho pelo Duncan.
+</p>
+<p>
+  Só tarefa com data vai para a agenda. O evento leva o título e a data. Com horário,
+  dura 30 minutos. Sem horário, fica o dia inteiro. Nas notas vão a descrição, os
+  títulos das subtarefas e uma marca com o identificador da tarefa, para o app
+  reconhecer o evento depois. O evento não tem alarme. Os lembretes continuam sendo os
+  do Duncan. Tarefa concluída permanece no dia, com um sinal de feita no título.
+</p>
+<p>
+  Para não criar o mesmo evento duas vezes, o Duncan lê os eventos da agenda escolhida,
+  numa janela em volta das datas das tarefas, e procura essa marca. O que ele usa dessa
+  leitura é o título, as notas, o dia e se o evento é de dia inteiro. Evento sem a marca
+  não é alterado. A leitura e a gravação acontecem no aparelho. O Duncan não envia a sua
+  agenda a servidor nenhum. Se a agenda escolhida sincroniza com o Google, quem envia o
+  evento é o aplicativo de agenda do celular, sob a política dele.
+</p>
+<p>
+  O nome da agenda escolhida fica neste aparelho, só para mostrar qual está ligada, e
+  pode incluir o e-mail da conta. Essa ligação não entra no backup. Dá para desligar
+  quando quiser. Ao desligar, o Duncan pergunta se tira da agenda os eventos das tarefas
+  que ainda estão pendentes. "Apagar todos os dados" desliga a agenda antes de apagar o
+  resto, e os eventos que o Duncan já gravou ficam nela: para tirá-los, use o aplicativo
+  de agenda.
+</p>
 
 <h2>Notificações</h2>
 <p>
   Os lembretes são <strong>locais</strong>: agendados e disparados pelo próprio
-  aparelho. O aplicativo não usa notificações push remotas e não registra nenhum
-  token de notificação em servidor algum.
+  aparelho. Nenhum lembrete chega pela internet, e o app não se cadastra em nenhum
+  serviço de notificações. Durante o foco, se você permitir, o app liga o
+  Não perturbe e o desliga no fim.
+  <!-- #406: o auto-init do FCM fica desligado (firebase_messaging_auto_init_enabled=false,
+       plugins/sem-inicio-automatico-do-firebase.js) e o app nunca pede token de push.
+       PENDENTE (Engenheiro): confirmar no logcat do aparelho com o build real. Se o Firebase
+       gerar token do FCM, "não se cadastra em nenhum serviço de notificações" deixa de ser
+       verdade. -->
+</p>
+
+<h2>Bem-estar</h2>
+<p>
+  Humor, energia, o "Tive vontade" e as conversas com o Duncan são registros pessoais e
+  apoio para a rotina. Não são diagnóstico nem tratamento, e não substituem acompanhamento
+  profissional. Se estiver passando por um momento difícil, o CVV atende pelo 188, a
+  qualquer hora. Numa emergência, ligue 192. Se a IA estiver ligada, a mensagem em que
+  você fala de uma crise também vai ao Gemini, com o que vocês já conversaram. Nessa
+  hora o Duncan não manda as tarefas, os hábitos, as metas nem o perfil do mapa. Se a
+  resposta não indicar o 188 e o 192, ele mostra um texto fixo, que fica no aparelho.
 </p>
 
 <h2>O que o aplicativo não faz</h2>
 <ul>
   <li>Não exibe anúncios.</li>
   <li>Não usa ferramentas de analytics, telemetria ou rastreamento de uso.</li>
-  <li>Não coleta localização, contatos, fotos, câmera, microfone ou identificadores de publicidade.</li>
-  <li>Não vende, aluga nem compartilha dados com terceiros — não há dados coletados para isso.</li>
+  <li>Não coleta localização, contatos, fotos, câmera nem identificadores de publicidade. O microfone só é usado quando você toca nele para falar com o Duncan.</li>
+  <li><!-- #311 -->Não guarda em servidor nosso a conversa, a carta nem o áudio. <!-- /#311 -->As denúncias que você fizer ficam conosco por até 12 meses.</li>
+  <li>Não vende nem aluga seus dados. Eles só saem do aparelho nos casos descritos acima.</li>
 </ul>
 
 <h2>Permissões</h2>
+<ul>
+  <li><strong>Internet:</strong> para a conversa, a carta da semana, o backup no Drive, a
+    denúncia e a verificação de atualização.</li>
+  <li><strong>Notificações:</strong> para os lembretes.</li>
+  <li><strong>Microfone:</strong> só quando você toca nele para falar com o Duncan.</li>
+  <li><strong>Agenda:</strong> só se você ligar as tarefas na agenda, para ler e gravar na
+    agenda que você escolher.</li>
+  <li><strong>Alarmes exatos:</strong> para avisar o fim do bloco de foco na hora certa,
+    se o celular permitir.</li>
+  <li><strong>Reinício do celular:</strong> para religar os lembretes e o bloco de foco
+    depois que o celular reinicia.</li>
+  <li><strong>Não perturbe:</strong> só se você conceder, para silenciar o celular durante
+    o foco.</li>
+</ul>
 <p>
-  O aplicativo declara acesso à <strong>internet</strong>, usado apenas para a
-  verificação de atualização descrita acima, e pede permissão para
-  <strong>exibir notificações</strong>, usada apenas para os lembretes que você mesmo
-  configura. Você pode recusar as notificações e continuar usando o aplicativo
-  normalmente.
+  Recusar qualquer uma delas não impede o uso do resto do aplicativo.
 </p>
 
 <h2>Como apagar seus dados</h2>
 <ul>
   <li>
-    Dentro do aplicativo, em <strong>Configurações</strong>, existe a opção de apagar
-    todo o progresso — tarefas, hábitos, metas, XP, conquistas, avaliações e cartas.
-    A ação não pode ser desfeita.
+    Em <strong>Configurações</strong>, "Apagar todos os dados" apaga tudo o que o Duncan
+    guarda neste aparelho: tarefas, hábitos, metas, XP, conquistas, Roda da Vida, cartas,
+    humor, foco, a conversa, as listas e as denúncias que ainda não saíram. Apaga também o
+    nome, o perfil do mapa, os avisos que você já leu, os consentimentos e a cópia
+    temporária de um backup em arquivo, se ela tiver ficado no app. O arquivo que você já
+    salvou ou enviou para outro lugar fica onde está. O app volta para a apresentação. Ficam só as suas
+    escolhas de lembrete e um aviso, sem dado pessoal, que segura o backup automático no
+    Drive. Ele só volta quando você restaurar o backup ou tocar em "salvar agora", para o
+    app vazio não tomar o lugar do backup que está lá. Apagar todos os dados não pode ser desfeito.
+  </li>
+  <!-- nº 66: o item provisório sobre os áudios do microfone saiu em 16/11/2026. Esta versão
+       da política vale para o AAB do teste fechado, feito da main 87a53ef, que contém o
+       9f1c8a8 (#353, nº 66) e o 75828fc (#398, nº 71): parar e cancelar apagam o arquivo, as
+       sobras somem ao abrir a conversa e "Apagar todos os dados" apaga cache/Audio e
+       cache/ExpoAudio (src/lib/audioDoDitado.ts, apagarTudo.ts:87). Se o build que for ao
+       teste fechado não contiver o 9f1c8a8, o item volta antes de publicar, em "Como
+       apagar", depois do primeiro item: "Os áudios do microfone ficam num arquivo
+       temporário do app até o Android limpar o cache. Esse botão ainda não os apaga;
+       desinstalar o app ou limpar o cache dele nas configurações do Android apaga." -->
+  <li>
+    O botão também desconecta a sua conta Google neste aparelho: o app esquece o e-mail
+    do Drive e a data do último backup, e sai da sessão do Google. Isso acontece só no
+    aparelho: o app não pede nada ao Drive nessa hora.<!-- #311 --> O número desta instalação, usado só para
+    limitar o uso da IA, é apagado e outro é criado.<!-- /#311 -->
   </li>
   <li>
-    Desinstalar o aplicativo remove o banco de dados local junto. Como não existe
-    cópia em servidor, nada permanece depois disso.
+    Os backups que já estão no Drive não saem com esse botão. Para apagá-los, use "Apagar
+    backup do Drive", em Configurações (veja o item abaixo). As denúncias que já foram enviadas saem se você pedir pelo e-mail
+    <a href="mailto:conta.duncan@gmail.com">conta.duncan@gmail.com</a>.
+    <!-- Conferido na main c921469 (#314 em a90c429, #311 já mergeado). Reconferido na
+         origin/main 3ead4d7 (18/11/2026): src/lib/apagarTudo.ts:33-88 (signOut em :82
+         via driveBackup.ts:62 e :67, sem revokeAccess; nuvemStore desconectar em :81,
+         implementação em nuvemStore.ts:154-160; cache em :84 via backup.ts:109-116,
+         só duncan-backup-*.json; id novo em :61, clienteIA.ts:140; semParar em :91-95,
+         usado em :81, :82, :84 e :87). Ficam no nuvemStore só automaticoPausado e
+         protegerDrive (booleanos); conta, ultimoBackup e contaLiberada vão a null
+         (nuvemStore.ts:154-167). Se esse código mudar, rever este trecho.
+         apagarTodosOsDados em apagarTudo.ts:33; não faz nada se o banco não abriu, :39;
+         agenda desligada em :42; id novo em :61; Google em :81-82 e cache em :84;
+         áudios do ditado em :87, nº 66). -->
+  </li>
+  <li>
+    Em <strong>Configurações</strong>, na parte do Google Drive, o botão "apagar backup"
+    (ou "Apagar backup do Drive", se o Drive não estiver conectado) apaga de vez a cópia que
+    está na pasta do app no seu Google Drive, sem passar pela lixeira, e desconecta o Drive
+    para o app não salvar outra sozinho. Também dá para apagar pelo próprio Drive, no
+    navegador: Configurações › Gerenciar apps › o nome com que o Duncan aparece na sua
+    conta Google › "Excluir dados ocultos do app".
+    <!-- O nome nesse caminho é o da tela de consentimento OAuth, não o título da loja.
+         Só escreva "Duncan" ali se a tela de consentimento estiver com esse nome. -->
+  </li>
+  <li>
+    Desconectar o Google Drive não apaga a cópia que já está lá: ela fica até você
+    apagá-la, e o app para de salvar novas.
+  </li>
+  <li>
+    Desinstalar o aplicativo remove o banco de dados local junto. Se você ligou o backup no
+    Google Drive, a cópia que está lá não sai junto e continua na sua conta. Para apagá-la,
+    toque no botão de apagar o backup, em Configurações, antes de desinstalar, ou apague
+    depois pelo Drive no navegador, como explicado acima. Os eventos que o Duncan
+    gravou na agenda do celular ficam nela.
+  </li>
+  <li>
+    As denúncias que chegaram a nós são apagadas se você pedir pelo contato abaixo.
+  </li>
+  <li>
+    O que já foi enviado ao Gemini segue as regras de retenção do Google e não pode ser
+    apagado pelo aplicativo.
   </li>
 </ul>
+
+<h2>Os seus direitos</h2>
 <p>
-  Não é necessário nos pedir a exclusão de dados: não temos nenhum para excluir.
+  Pela Lei Geral de Proteção de Dados (Lei nº 13.709/2018), você pode pedir a confirmação
+  de que tratamos dados seus, o acesso, a correção, a eliminação e a portabilidade deles,
+  informações sobre com quem foram compartilhados, e pode revogar o seu consentimento a
+  qualquer momento, por exemplo desligando a carta com IA ou o backup. Quase tudo fica só
+  no seu aparelho e você mesmo controla; para o resto, escreva para o contato abaixo.
+  <!-- PENDENTE (advogado): conferir a lista de direitos (art. 18), o prazo de resposta e
+       a redação desta seção. -->
 </p>
 
-<h2>Crianças</h2>
+<h2>Idade</h2>
 <p>
-  O aplicativo não é direcionado a crianças e não coleta dados pessoais de ninguém,
-  independentemente da idade.
+  O aplicativo é para maiores de 18 anos e não é direcionado a crianças nem a
+  adolescentes.
 </p>
 
 <h2>Mudanças nesta política</h2>
 <p>
-  Se o aplicativo passar a tratar dados de outra forma — por exemplo, se um dia
-  oferecer sincronização entre aparelhos —, esta página será atualizada antes da
-  mudança entrar no ar, e a data no topo mudará junto.
+  Se o aplicativo passar a tratar dados de outra forma, esta página será atualizada
+  antes de a mudança entrar no ar, e a data no topo mudará junto.
 </p>
 
 <h2>Contato</h2>
 <p>
-  Dúvidas sobre esta política:
-  <a href="mailto:kikomeza.78@gmail.com">kikomeza.78@gmail.com</a>.
+  Dúvidas sobre esta política ou pedidos sobre os seus dados:
+  <a href="mailto:conta.duncan@gmail.com">conta.duncan@gmail.com</a>.
 </p>
 
 <footer>
-  Ordem do Dia — aplicativo de tarefas, hábitos e metas. Os dados ficam no seu aparelho.
+  Duncan · Tarefas e Hábitos. Seus dados ficam no seu aparelho, salvo o que está descrito acima.
 </footer>
 
 </main>
