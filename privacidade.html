@@ -51,9 +51,9 @@
 <div class="destaque">
   <strong>Em resumo:</strong> o Duncan não tem conta e guarda o que você cria no seu aparelho.
   O que você escreve só sai dele quando você conversa com o Duncan, quando permite que ele
-  escreva a carta da semana com a IA, quando liga o backup no seu Google Drive ou quando
-  denuncia algo que a IA escreveu. Uma tarefa com data também pode ir para uma agenda do
-  celular, se você ligar essa opção.
+  escreva a carta da semana com a IA, quando pede a ajuda dele numa meta, quando liga o
+  backup no seu Google Drive ou quando denuncia algo que a IA escreveu. Uma tarefa com data
+  também pode ir para uma agenda do celular, se você ligar essa opção.
 </div>
 <!-- allowBackup (A1): DECIDIDO em 16/11/2026. O PO desligou o backup do Android, e o
      Engenheiro abriu o habit-quest #447 (rascunho, head 35d097f, base 87a53ef), que põe
@@ -115,7 +115,7 @@
 </p>
 <p>
   Não existe cadastro nem conta do Duncan.<!-- #311 --> Há um servidor só para levar a conversa, a
-  carta e o áudio até a IA. Ele não guarda o que você escreve. As denúncias que você fizer
+  carta, a ajuda da meta e o áudio até a IA. Ele não guarda o que você escreve. As denúncias que você fizer
   não passam por esse servidor: ficam conosco por até 12 meses (veja abaixo).<!-- /#311 -->
   A sua conta Google só entra no Duncan se você ligar o backup no Drive. A agenda, se você
   ligar, usa uma agenda que já está no celular, sem um login novo.
@@ -142,28 +142,27 @@
     carta chega do mesmo jeito, com os números da semana e um conselho pronto, e nada é
     enviado. Dá para mudar quando quiser, em Configurações.
   </li>
-  <!-- #n80 (inativo): a ajuda da meta, nº 80 do backlog, ainda não está no código da main
-       (87a53ef, 16/11/2026: o servidor só tem as rotas conversa, transcricao e carta,
-       servidor-ia/src/usos.ts:16-17). O AAB do teste fechado sai sem ela. Este item entra
-       no ar (sai do comentário) com a versão que trouxer o nº 80, antes do deploy da rota
-       nova e da OTA. A frase do meio é igual, palavra por palavra, ao aviso do app escrito
-       pela Cronista (16/11/2026); se o aviso mudar, esta frase muda junto. As últimas
-       frases do item (data do aparelho, campo "hoje"; o marcador "tipo: habito"; o campo
-       "modo", versao ou revisar; os apelidos m1/t3 no lugar dos ids reais, que não vão;
-       e o id de instalação só no cabeçalho, para o contador, nunca ao Gemini; decisão do
-       PO de 16/11) são informação a mais da política, sem contrariar o aviso. O id de
-       instalação e o contador com hash já estão declarados no item do servidor e na
-       Segurança dos Dados (play-console.md, 4.1 e 4.2, IDs do dispositivo). Campos: estudo
-       do Engenheiro de 16/11 (seção 3, rota POST /v1/meta com campos nomeados). Contador
-       próprio de 4 pedidos por dia por aparelho, pelo hash do id de instalação, como o da
-       conversa; os números não entram no texto. Ao ativar, também: no resumo, depois de
-       "com a IA,", acrescentar " quando pede a ajuda dele numa meta,"; em "Não existe
-       cadastro", "levar a conversa, a carta e o áudio" passa a "levar a conversa, a carta,
-       a ajuda da meta e o áudio"; no item do servidor, "A conversa, a carta da semana e o
-       áudio do microfone" passa a "A conversa, a carta da semana, a ajuda da meta e o
-       áudio do microfone"; no item do Google, "as mensagens, o áudio do microfone e as
-       respostas" passa a "as mensagens, o áudio do microfone, o que vai da meta e as
-       respostas".
+  <!-- #n80 (ativo): a ajuda da meta (nº 80) entrou na main pelo #448 (rota
+       POST /v1/meta, merge 790be21) e pelo #450 (app, merge dd6848b). Conferido
+       na main 580d0cd em 18/11/2026. Vai no AAB do teste fechado. As portas são
+       «Sugerir uma versão» (GoalFormSheet.tsx / AjudaDaMeta.tsx) e «Revisar a
+       meta» (app/goal/[id].tsx), que chamam pedirMeta() e POST /v1/meta. A frase
+       do meio é igual, palavra por palavra, ao aviso do app escrito pela
+       Cronista (16/11/2026; AjudaDaMeta.tsx:274-278). Se o aviso mudar, esta
+       frase muda junto. As últimas frases do item (data do aparelho, campo
+       "hoje"; o marcador "tipo: habito"; o campo "modo", versao ou revisar; os
+       apelidos m1/t3 no lugar dos ids reais, que não vão; e o id de instalação
+       só no cabeçalho X-Duncan-Instalacao, para o contador com prefixo meta,
+       nunca ao Gemini; decisão do PO de 16/11) são informação a mais da
+       política, sem contrariar o aviso. O idPedido vai no corpo só para o
+       servidor (deduplicação) e não vai ao Gemini. Allowlist do corpo:
+       idPedido, modo, hoje, titulo, descricao, porque, prazo, medida, marcos,
+       recusadas (ajudaDaMeta.ts:19; servidor-ia/src/meta.ts:35).
+       temPlanoPremium() hoje devolve true para todo mundo; o texto visível não
+       fala de plano. A reescrita da meta no onboarding, uma vez por
+       instalação, não está no código e fica de fora. O allowBackup não muda
+       neste passo.
+  -->
   <li>
     <strong>Ajuda com uma meta, se você pedir.</strong> Quando você pede ao Duncan uma
     versão melhor de uma meta ou uma revisão dela, o app avisa antes o que vai. Desta meta,
@@ -179,11 +178,11 @@
     mesmo número desta instalação explicado no item do servidor do Duncan: ele vai só
     para o servidor do Duncan, para a contagem, e não vai ao Gemini.
   </li>
-  /#n80 -->
+  <!-- /#n80 -->
   <!-- #311 -->
   <li>
-    <strong>O servidor do Duncan.</strong> A conversa, a carta da semana e o áudio do
-    microfone (que vai para virar texto) não vão direto do celular para o Gemini: passam
+    <strong>O servidor do Duncan.</strong> A conversa, a carta da semana, a ajuda da meta e o
+    áudio do microfone (que vai para virar texto) não vão direto do celular para o Gemini: passam
     antes por um servidor do Duncan no Google Cloud, em São Paulo, que os repassa ao Gemini
     e devolve a resposta. Esse servidor não guarda a conversa, a carta, o áudio nem nada do
     que você escreveu, e não grava o conteúdo dos pedidos. As denúncias não passam por ele.
@@ -242,17 +241,19 @@
          de usuário.
          AI Studio, conferido em 09/11/2026 pelo Caique: a chave do Duncan está num
          projeto no Nível 1 pago, com o registro de chamadas (GenerateContent e
-         Interactions) desligado. Falta confirmar só que o projeto não está no
-         Contributor Tier (não foi dito de forma explícita). Se o registro ligar ou o
-         projeto entrar no Contributor Tier, a
+         Interactions) desligado. Contributor Tier, CONFERIDO em 18/11/2026 pelo
+         Caique (prints do AI Studio, informado pelo PO): o projeto é o Default
+         Gemini Project, com a chave «API Duncan», no Nível 1 pago, fora da
+         contribuição de dados; os Gemini API Logs and Datasets estão como Disabled.
+         Se o registro ligar ou o projeto entrar no Contributor Tier, a
          política e a Segurança dos Dados mudam (com o registro ligado, o projeto guarda
          pedidos e respostas por até 55 dias; no Contributor Tier, o Google usa os dados
          como na faixa gratuita: ai.google.dev/gemini-api/docs/logs-policy, conferido em
          24/10/2026). Servidor no ar desde o go-live de 26/10/2026 e chave antiga do Gemini
          revogada em 30/10/2026, conferidos pelo Engenheiro em 16/11/2026. O registro de
          chamadas desligado e a faixa paga foram conferidos pelo Caique em 09/11/2026.
-         Logs conferidos pelo Engenheiro em 18/11/2026. Publicar só depois de o Caique
-         confirmar que o projeto não está no Contributor Tier. -->
+         Contributor Tier conferido pelo Caique em 18/11/2026. Logs conferidos pelo
+         Engenheiro em 18/11/2026. -->
   </li>
   <!-- /#311 -->
   <!-- #406 -->
@@ -305,8 +306,8 @@
     <a href="https://ai.google.dev/gemini-api/terms">Termos Adicionais do Gemini API</a> e o
     adendo de proteção de dados do Google como operador. Nessa modalidade, o Google não usa
     o que você envia nem as respostas para melhorar os produtos dele. Ele guarda as
-    mensagens, o áudio do microfone e as respostas por 55 dias, só para detectar e impedir
-    abuso e cumprir obrigações legais; nesse caso, funcionários autorizados do Google podem
+    mensagens, o áudio do microfone, o que vai da meta e as respostas por 55 dias, só para
+    detectar e impedir abuso e cumprir obrigações legais; nesse caso, funcionários autorizados do Google podem
     examinar o que for sinalizado pelos filtros de segurança. Não escreva nem fale ao
     Duncan o que você não quer que chegue ao Google.
     <!-- Decisão A (21/10/2026): Gemini pago + servidor intermediário no Cloud Run
